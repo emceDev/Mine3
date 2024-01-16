@@ -4,6 +4,7 @@ const {
 } = require("mineflayer-pathfinder");
 const { Vec3 } = require("vec3");
 const { equip, go, wait } = require("../Utils/util");
+const { enableAlert } = require("../Utils/Botalert");
 
 const grinderAfk = async (bot, dcSend) => {
   bot.on("entitySpawn", (e) =>
@@ -13,6 +14,7 @@ const grinderAfk = async (bot, dcSend) => {
         e.name === "zombie_villager" &&
         dcSend("spawned " + e.name)
   );
+
   enableAlert(bot, ["Jagodziarek"], dcSend);
   const int = setInterval(attackEntitiesInRange, 1000);
 
