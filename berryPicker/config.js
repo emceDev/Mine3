@@ -3,7 +3,6 @@ const { token } = require("./berryPicker/credentials");
 const pass = "minecraft123";
 const version = "1.20.1";
 
-const token = token;
 const port = 5555;
 const username = "Berserker1231";
 const host = "127.0.0.1";
