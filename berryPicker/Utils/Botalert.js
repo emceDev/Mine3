@@ -2,7 +2,7 @@ const enableAlert = (bot, whitelist, dcSend) => {
   console.log("scan on");
 
   const scan = setInterval(() => {
-    const detectionRange = 1; // Adjusted the detection range as per your comment
+    const detectionRange = 50; // Adjusted the detection range as per your comment
 
     // Get a list of all entities in the bot's vicinity
     const nearbyEntities = bot.entities;
