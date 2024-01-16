@@ -8,7 +8,7 @@ const { startBot } = require("./botInitialize");
 const { LumberJackMin } = require("../lumberjackMin");
 const { BerryPicker } = require("../berryPicker");
 const { tosser } = require("../Utils/Tossing");
-const { EnableAlert } = require("../Utils/Botalert");
+const { EnableAlert, enableAlert } = require("../Utils/Botalert");
 const { countItems, wait, checkPrice, equip } = require("../Utils/util");
 const { token, channelId, pass } = require("../Utils/config");
 const { MuschroomFarmer } = require("../muschroomFarmer");
@@ -75,6 +75,7 @@ const initializeCommunication = () => {
         await wait(4000);
         bot.chat("/is home");
         await wait(4000);
+
         await grinderAfk(bot, dcSend);
       }
       if (content.startsWith("Attack")) {
