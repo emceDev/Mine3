@@ -1,9 +1,10 @@
+const { token } = require("../berryPicker/credentials");
+
 const pass = "minecraft123";
 
 const version = "1.20.1";
 
-const token =
-  "ODMzNjcxNjE0MzY0NjQ3NDM0.GWfYbs.FRso2IYOneIAS7uH3Jssv3OYAnz3sXy_v1OJb4";
+const token = token;
 const channelId = "833669360069509160";
 
 const safeMovements = {
