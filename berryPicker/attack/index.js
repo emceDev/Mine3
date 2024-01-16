@@ -13,7 +13,7 @@ const grinderAfk = async (bot, dcSend) => {
         e.name === "zombie_villager" &&
         dcSend("spawned " + e.name)
   );
-
+  enableAlert(bot, ["Jagodziarek"], dcSend);
   const int = setInterval(attackEntitiesInRange, 1000);
 
   // Function to find and attack entities within the specified distance
