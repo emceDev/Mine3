@@ -7,7 +7,7 @@ const test = async () => {
     console.log(message);
   };
   const bot = await startBot(dcSend);
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 2; i++) {
     await MuschroomFarmer(bot, dcSend);
   }
 };

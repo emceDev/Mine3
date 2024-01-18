@@ -82,9 +82,14 @@ const initializeCommunication = () => {
         bot.chat("/is home 3");
       }
       if (content.startsWith("Mush")) {
-        bot.chat("/is home 3");
-
-        await wait(5000);
+        const bot = await startBot(dcSend);
+        await wait(4000);
+        bot.chat("/login minecraft123");
+        await wait(4000);
+        bot.chat("/zmienserwer skyblock");
+        await wait(4000);
+        bot.chat("/is home 5");
+        await wait(4000);
         let profit = 0;
         console.log("earned");
         for (let i = 0; i < 100; i++) {

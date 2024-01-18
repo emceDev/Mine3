@@ -281,23 +281,19 @@ const withdrawItem = async (bot, itemName, count, chestCoords) => {
       console.log("opened");
     });
     await wait(1000);
-    // comst items=
 
     const items = opened
       .containerItems()
       .filter((item) => item.name === itemName);
     console.log(items);
-    await opened.withdraw(items[0].type, null, count);
-    await opened.close();
+    if (items.length > 0) {
+      await opened.withdraw(items[0].type, null, count);
+      await opened.close();
+    } else {
+      console.log("no items at chest");
+    }
+
     resolve();
-    // try {
-    //   await opened.withdraw(items[0].type, null, count);
-    //   await wait(100);
-    //   await opened.close();
-    //   resolve();
-    // } catch (error) {
-    //   console.log(error);
-    // }
   });
 };
 const equip = (bot, itemName, dcSend) => {
@@ -333,13 +329,7 @@ const equip = (bot, itemName, dcSend) => {
     }
   });
 };
-const shouldSupply = async (
-  bot,
-  itemName,
-  count,
-  chestCoords,
-  wanted = count
-) => {
+const shouldSupply = async (bot, itemName, count, chestCoords, wanted) => {
   const items = bot.inventory.items();
   let invCount = 0;
   const item = items.filter((item) => item.name === itemName);
@@ -348,8 +338,8 @@ const shouldSupply = async (
       invCount += id.count;
     }
   }
-  console.log("Resuply:", itemName, "have", invCount, "/", wanted);
-  if (item !== undefined && invCount > count) {
+  console.log("Resuply:", itemName, "have:", invCount, "wanted:", wanted);
+  if (item !== undefined && invCount >= count) {
     return;
   } else {
     await withdrawItem(bot, itemName, wanted, chestCoords);

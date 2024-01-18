@@ -23,7 +23,7 @@ const tosser = async (bot, name, coords = tossingPoint) => {
         );
         console.log("onspot");
         const itemsToss = getItems();
-        bot.lookAt(new Vec3(coords.x - 1, coords.y + 1, coords.z), true);
+        bot.lookAt(new Vec3(coords.x, coords.y + 1, coords.z + 1), true);
         if (getItems().length > 0) {
           console.log("number items to toss", itemsToss.length);
           await tossItemsArr(getItems())
