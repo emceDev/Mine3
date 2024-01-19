@@ -21,17 +21,18 @@ const {
   closeCoords,
   chestCoords,
 } = require("./mushConfig");
+const { enableAlert } = require("../Utils/Botalert");
 
 const MuschroomFarmer = async (bot, dcSend) => {
   let blocksCut = 0;
   let boneMealUsed = 0;
   let profit = 0;
-
+  console.log("farmer started");
   return new Promise(async (resolve, reject) => {
-    enableAlert(bot, ["Jagodziarek"], dcSend);
+    // enableAlert(bot, ["Jagodziarek"], dcSend);
     //   console.log(bot.inventory.items());
     const getMushrooms = async () => {
-      console.log("fired");
+      console.log("getting mushrooms");
       return new Promise(async (resolve, reject) => {
         await wait(500);
         const stem = await findBlocks(bot, "mushroom_stem", 20);
@@ -39,18 +40,40 @@ const MuschroomFarmer = async (bot, dcSend) => {
         const cap = await findBlocks(bot, "red_mushroom_block", 20);
         await wait(500);
         const center = coords;
+
+        // Corrected shuffleArray function
+        function shuffleArray(array) {
+          for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+          }
+        }
+
+        // Sorting function with added randomness
         function compareForSpiralSorting(a, b) {
           const angleA = Math.atan2(a.z - center.z, a.x - center.x);
           const angleB = Math.atan2(b.z - center.z, b.x - center.x);
-          return angleA - angleB;
+
+          // Introduce randomness
+          const randomFactor = Math.random() * 2 - 1; // Random number between -1 and 1
+          const randomizedDifference = angleA - angleB + randomFactor;
+
+          return randomizedDifference;
         }
 
-        x = cap.sort(compareForSpiralSorting);
-        console.log(stem.length);
-        console.log(cap.length);
-        resolve([...stem, ...cap]);
+        // Combine stem and cap arrays and shuffle them in place
+        const coordinates = [...stem, ...cap];
+        shuffleArray(coordinates);
+
+        // Sort the shuffled array using the sorting function
+        coordinates.sort(compareForSpiralSorting);
+
+        // Now 'coordinates' is randomly shuffled and sorted
+        console.log(coordinates);
+        resolve(coordinates);
       });
     };
+
     const harvestMushroom = async (shroms) => {
       // console.log(shroms.length);
       dcSend("found:" + shroms.length + "for:" + shroms.length * 9);
@@ -69,6 +92,7 @@ const MuschroomFarmer = async (bot, dcSend) => {
     };
     const plantMushroom = async () => {
       return new Promise(async (resolve, reject) => {
+        console.log("planting mushrooms");
         await go(bot, closeCoords, 1, safeMovements);
         await shouldSupply(bot, "red_mushroom", 1, chestCoords, 64);
         await sowPlant(bot, coords, "red_mushroom", dcSend);
