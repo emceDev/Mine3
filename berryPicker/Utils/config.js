@@ -1,6 +1,10 @@
 const { token } = require("./credentials");
 
-const pass = "minecraft123";
+// const pass = "minecraft123";
+// const username = "Berserker321";
+
+// const pass = "jestGrane1";
+// const username = "grzesiuKartofel";
 
 const version = "1.20.1";
 
@@ -25,8 +29,8 @@ const fastMovemets = {
 };
 const port = 5555;
 const host = "127.0.0.1";
-const username = "Berserker321";
 
+// const username = "grzesiuKartofel"
 // const username = "Berserker321";
 // const host = "iskyblock.pl";
 // const port = 25565;

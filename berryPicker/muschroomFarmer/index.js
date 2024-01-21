@@ -97,7 +97,7 @@ const MuschroomFarmer = async (bot, dcSend) => {
         await shouldSupply(bot, "red_mushroom", 1, chestCoords, 64);
         await sowPlant(bot, coords, "red_mushroom", dcSend);
         console.log("tring to aplly");
-        await shouldSupply(bot, "bone_meal", 6, chestCoords, 128);
+        await shouldSupply(bot, "bone_meal", 20, chestCoords, 256);
         await applyBoneMeal(bot, coords, dcSend, 100).then(
           (used) => (boneMealUsed = boneMealUsed + used)
         );

@@ -14,6 +14,7 @@ const { token, channelId, pass } = require("../Utils/config");
 const { MuschroomFarmer } = require("../muschroomFarmer");
 const { MuschroomFarmerMax } = require("../mushroomFarmerMax");
 const { grinderAfk } = require("../attack");
+const { farmer } = require("../farmer");
 
 // const intents = new Intents
 let channel = undefined;
@@ -62,6 +63,15 @@ const initializeCommunication = () => {
         console.log("login in");
         bot.chat(`/login ${pass}`);
         dcSend("ready for commands");
+      }
+      if (content.startsWith("Farm")) {
+        const bot = await startBot(dcSend);
+        await wait(4000);
+        bot.chat("/login minecraft123");
+        await wait(4000);
+        bot.chat("/is home 4");
+        await wait(6000);
+        await farmer(bot, dcSend);
       }
       if (content.startsWith("Lumb")) {
         LumberJackMin(bot, dcSend);
