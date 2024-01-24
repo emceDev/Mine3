@@ -15,6 +15,7 @@ const { MuschroomFarmer } = require("../muschroomFarmer");
 const { MuschroomFarmerMax } = require("../mushroomFarmerMax");
 const { grinderAfk } = require("../attack");
 const { farmer } = require("../farmer");
+const { honeyMan } = require("../honeyMan");
 
 // const intents = new Intents
 let channel = undefined;
@@ -77,13 +78,16 @@ const initializeCommunication = () => {
         LumberJackMin(bot, dcSend);
       }
       if (content.startsWith("Honey")) {
-        LumberJackMin(bot, dcSend);
         const bot = await startBot(dcSend);
         await wait(4000);
         bot.chat("/login minecraft123");
         await wait(4000);
         bot.chat("/is home bee");
         await wait(4000);
+        for (let i = 0; i < 100; i++) {
+          await honeyMan(bot, dcSend);
+          await wait(600000);
+        }
       }
       if (content.startsWith("Guard")) {
         const bot = await startBot(dcSend);
