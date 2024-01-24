@@ -84,8 +84,8 @@ const initializeCommunication = () => {
         await wait(4000);
         bot.chat(`/zmienserwer skyblock`);
         await wait(4000);
+        bot.chat("/is home bee");
         for (let i = 0; i < 100000; i++) {
-          bot.chat("/is home bee");
           await wait(4000);
           await honeyMan(bot, dcSend);
           await wait(240000);
