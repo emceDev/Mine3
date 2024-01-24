@@ -82,6 +82,8 @@ const initializeCommunication = () => {
         await wait(4000);
         bot.chat(`/login ${pass}`);
         await wait(4000);
+        bot.chat(`/zmienserwer skyblock`);
+        await wait(4000);
         for (let i = 0; i < 100000; i++) {
           bot.chat("/is home bee");
           await wait(4000);
