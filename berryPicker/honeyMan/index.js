@@ -10,6 +10,7 @@ const { beeCoords } = require("./honeyConfig");
 
 const honeyMan = async (bot, dcSend) => {
   return new Promise(async (resolve, reject) => {
+    let fed = 0;
     const findBees = async () => {
       const bees = [];
       const entities = bot.entities;
@@ -42,6 +43,7 @@ const honeyMan = async (bot, dcSend) => {
       await equip(bot, "poppy", dcSend);
       for (const bee of bees) {
         await bot.useOn(bee);
+        fed = fed++;
         await wait(500);
       }
     };
@@ -67,8 +69,9 @@ const honeyMan = async (bot, dcSend) => {
     dcSend(
       `"Is it day:" ${bot.time.isDay}"have hives/bees: ", ${
         hives.length
-      }, "/", ${Math.floor(bees.length / 3)}`
+      }, "/", ${Math.floor(bees.length / 3)}, fed:${fed}`
     );
+    await equip(bot, "potato", dcSend);
     resolve();
   });
 };

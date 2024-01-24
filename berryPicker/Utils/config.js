@@ -29,9 +29,9 @@ const fastMovemets = {
 };
 const port = 5555;
 const host = "127.0.0.1";
+const username = "Berserker321";
+// const username = "grzesiuKartofel";
 
-const username = "grzesiuKartofel";
-// const username = "Berserker321";
 // const host = "iskyblock.pl";
 // const port = 25565;
 // const cutPoint = { x: 6122, y: 85, z: 6469 };
