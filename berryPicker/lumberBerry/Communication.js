@@ -80,13 +80,13 @@ const initializeCommunication = () => {
       if (content.startsWith("Honey")) {
         const bot = await startBot(dcSend);
         await wait(4000);
-        bot.chat("/login minecraft123");
+        bot.chat(`/login ${pass}`);
         await wait(4000);
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 100000; i++) {
           bot.chat("/is home bee");
           await wait(4000);
           await honeyMan(bot, dcSend);
-          await wait(150000);
+          await wait(240000);
         }
       }
       if (content.startsWith("Guard")) {
