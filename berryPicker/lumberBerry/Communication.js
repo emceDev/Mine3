@@ -88,7 +88,7 @@ const initializeCommunication = () => {
         for (let i = 0; i < 100000; i++) {
           await wait(4000);
           await honeyMan(bot, dcSend);
-          await wait(240000);
+          await wait(600000);
         }
       }
       if (content.startsWith("Guard")) {
