@@ -76,6 +76,15 @@ const initializeCommunication = () => {
       if (content.startsWith("Lumb")) {
         LumberJackMin(bot, dcSend);
       }
+      if (content.startsWith("Honey")) {
+        LumberJackMin(bot, dcSend);
+        const bot = await startBot(dcSend);
+        await wait(4000);
+        bot.chat("/login minecraft123");
+        await wait(4000);
+        bot.chat("/is home bee");
+        await wait(4000);
+      }
       if (content.startsWith("Guard")) {
         const bot = await startBot(dcSend);
         await wait(4000);
