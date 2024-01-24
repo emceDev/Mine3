@@ -12,6 +12,7 @@ const {
   tool,
   chestCoords,
 } = require("./farmerConfig.js");
+const { safeMovements } = require("../Utils/config");
 
 const farmer = async (bot, dcSend) => {
   return new Promise(async (resolve, reject) => {
@@ -80,9 +81,12 @@ const farmer = async (bot, dcSend) => {
     const toSow = await getDirtBlocksBetweenCoordinates();
     for (const block of toSow) {
       console.log("go", block);
-      await go(bot, { x: block.x, y: block.y, z: block.z }, 3);
+      await wait(100);
+      await go(bot, { x: block.x, y: block.y, z: block.z }, 4, safeMovements);
       console.log("sow");
+      await wait(100);
       await sowPlant("potato", block);
+      await wait(100);
     }
   });
 };

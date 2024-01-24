@@ -1,0 +1,183 @@
+[33mcommit 0225fc2b304bcf4015cbaf53afc9fdb376d6e703[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: emce.dev <emce.dev@gmail.com>
+Date:   Sun Jan 21 18:25:42 2024 +0100
+
+    added farmer feature
+
+[1mdiff --git a/berryPicker/Utils/config.js b/berryPicker/Utils/config.js[m
+[1mindex 979add1..59a8f66 100644[m
+[1m--- a/berryPicker/Utils/config.js[m
+[1m+++ b/berryPicker/Utils/config.js[m
+[36m@@ -1,6 +1,10 @@[m
+ const { token } = require("./credentials");[m
+ [m
+[31m-const pass = "minecraft123";[m
+[32m+[m[32m// const pass = "minecraft123";[m
+[32m+[m[32m// const username = "Berserker321";[m
+[32m+[m
+[32m+[m[32m// const pass = "jestGrane1";[m
+[32m+[m[32m// const username = "grzesiuKartofel";[m
+ [m
+ const version = "1.20.1";[m
+ [m
+[36m@@ -25,8 +29,8 @@[m [mconst fastMovemets = {[m
+ };[m
+ const port = 5555;[m
+ const host = "127.0.0.1";[m
+[31m-const username = "Berserker321";[m
+ [m
+[32m+[m[32m// const username = "grzesiuKartofel"[m
+ // const username = "Berserker321";[m
+ // const host = "iskyblock.pl";[m
+ // const port = 25565;[m
+[1mdiff --git a/berryPicker/farmer/farmerConfig.js b/berryPicker/farmer/farmerConfig.js[m
+[1mnew file mode 100644[m
+[1mindex 0000000..58c9056[m
+[1m--- /dev/null[m
+[1m+++ b/berryPicker/farmer/farmerConfig.js[m
+[36m@@ -0,0 +1,16 @@[m
+[32m+[m[32m// const farmlandStart = { x: 96552, y: 74, z: 14615 };[m
+[32m+[m[32m// const tool = "iron_hoe";[m
+[32m+[m[32m// const chestCoords = { x: 96550, y: 75, z: 14615 };[m
+[32m+[m
+[32m+[m[32mconst farmlandCoordsStart = { x: 96542, y: -57, z: 14605 };[m
+[32m+[m[32mconst farmlandCoordsEnd = { x: 96557, y: -50, z: 14605 };[m
+[32m+[m[32mconst farmlandStart = { x: 96552, y: -61, z: 14605 };[m
+[32m+[m[32mconst tool = "iron_hoe";[m
+[32m+[m[32mconst chestCoords = { x: 96549, y: -52, z: 14622 };[m
+[32m+[m[32mmodule.exports = {[m
+[32m+[m[32m  farmlandStart,[m
+[32m+[m[32m  farmlandCoordsStart,[m
+[32m+[m[32m  farmlandCoordsEnd,[m
+[32m+[m[32m  tool,[m
+[32m+[m[32m  chestCoords,[m
+[32m+[m[32m};[m
+[1mdiff --git a/berryPicker/farmer/index.js b/berryPicker/farmer/index.js[m
+[1mnew file mode 100644[m
+[1mindex 0000000..7d41803[m
+[1m--- /dev/null[m
+[1m+++ b/berryPicker/farmer/index.js[m
+[36m@@ -0,0 +1,90 @@[m
+[32m+[m[32mconst {[m
+[32m+[m[32m  Movements,[m
+[32m+[m[32m  goals: { GoalNear },[m
+[32m+[m[32m} = require("mineflayer-pathfinder");[m
+[32m+[m[32mconst { Vec3 } = require("vec3");[m
+[32m+[m[32mconst { equip, go, wait, shouldSupply, findBlocks } = require("../Utils/util");[m
+[32m+[m[32mconst { enableAlert } = require("../Utils/Botalert");[m
+[32m+[m[32mconst {[m
+[32m+[m[32m  farmlandStart,[m
+[32m+[m[32m  farmlandCoordsStart,[m
+[32m+[m[32m  farmlandCoordsEnd,[m
+[32m+[m[32m  tool,[m
+[32m+[m[32m  chestCoords,[m
+[32m+[m[32m} = require("./farmerConfig.js");[m
+[32m+[m
+[32m+[m[32mconst farmer = async (bot, dcSend) => {[m
+[32m+[m[32m  return new Promise(async (resolve, reject) => {[m
+[32m+[m[32m    // enableAlert(bot, ["Jagodziarek"], dcSend);[m
+[32m+[m[32m    async function getDirtBlocksBetweenCoordinates() {[m
+[32m+[m[32m      const dirt = await findBlocks(bot, "dirt", 50);[m
+[32m+[m[32m      const farmlands = await findBlocks(bot, "farmland", 50);[m
+[32m+[m[32m      const dirtBlocks = [...dirt, ...farmlands];[m
+[32m+[m[32m      console.log(dirtBlocks);[m
+[32m+[m[32m      const filteredArray = dirtBlocks.filter([m
+[32m+[m[32m        (vec3) =>[m
+[32m+[m[32m          vec3.y >= farmlandCoordsStart.y &&[m
+[32m+[m[32m          vec3.y <= farmlandCoordsEnd.y &&[m
+[32m+[m[32m          vec3.x >= farmlandCoordsStart.x &&[m
+[32m+[m[32m          vec3.x <= farmlandCoordsEnd.x[m
+[32m+[m[32m      );[m
+[32m+[m[32m      filteredArray.sort((a, b) => {[m
+[32m+[m[32m        if (a.y !== b.y) {[m
+[32m+[m[32m          return a.y - b.y;[m
+[32m+[m[32m        }[m
+[32m+[m[32m        return a.x - b.x;[m
+[32m+[m[32m      });[m
+[32m+[m[32m      // console.log(filteredArray);[m
+[32m+[m[32m      return filteredArray;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    const sowPlant = async (plant, coords) => {[m
+[32m+[m[32m      return new Promise(async (resolve, reject) => {[m
+[32m+[m[32m        console.log("finding block");[m
+[32m+[m[32m        const dirt = await bot.blockAt(coords);[m
+[32m+[m[32m        const planted = await bot.blockAt([m
+[32m+[m[32m          new Vec3(coords.x, coords.y + 1, coords.z)[m
+[32m+[m[32m        );[m
+[32m+[m[32m        // console.log(planted);[m
+[32m+[m[32m        // console.log("asdfasd");[m
+[32m+[m[32m        // console.log(dirt);[m
+[32m+[m[32m        if (planted.name !== "air") {[m
+[32m+[m[32m          console.log("already planted");[m
+[32m+[m[32m          resolve();[m
+[32m+[m[32m          return;[m
+[32m+[m[32m        } else if (dirt && dirt.name === "farmland") {[m
+[32m+[m[32m          console.log("Farmland already present.");[m
+[32m+[m[32m        } else {[m
+[32m+[m[32m          console.log("Need to till the soil.");[m
+[32m+[m[32m          await makeFarmland(coords, tool);[m
+[32m+[m[32m        }[m
+[32m+[m[32m        await shouldSupply(bot, plant, 2, chestCoords, 256);[m
+[32m+[m[32m        await equip(bot, plant, dcSend);[m
+[32m+[m[32m        await bot.placeBlock(dirt, new Vec3(0, 1, 0)).catch((err) => {[m
+[32m+[m[32m          console.log("error");[m
+[32m+[m[32m          resolve();[m
+[32m+[m[32m        });[m
+[32m+[m[32m        resolve();[m
+[32m+[m[32m      });[m
+[32m+[m[32m    };[m
+[32m+[m[32m    const makeFarmland = async (coords, tool) => {[m
+[32m+[m[32m      return new Promise(async (resolve, reject) => {[m
+[32m+[m[32m        console.log("making farmland", coords);[m
+[32m+[m[32m        await shouldSupply(bot, tool, 1, chestCoords, 1);[m
+[32m+[m[32m        await equip(bot, tool, dcSend);[m
+[32m+[m[32m        await bot[m
+[32m+[m[32m          .activateBlock(bot.blockAt(coords), new Vec3(0, 1, 0))[m
+[32m+[m[32m          .then((x) => resolve());[m
+[32m+[m[32m      });[m
+[32m+[m[32m    };[m
+[32m+[m[32m    const toSow = await getDirtBlocksBetweenCoordinates();[m
+[32m+[m[32m    for (const block of toSow) {[m
+[32m+[m[32m      console.log("go", block);[m
+[32m+[m[32m      await go(bot, { x: block.x, y: block.y, z: block.z }, 3);[m
+[32m+[m[32m      console.log("sow");[m
+[32m+[m[32m      await sowPlant("potato", block);[m
+[32m+[m[32m    }[m
+[32m+[m[32m  });[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mmodule.exports = { farmer };[m
+[1mdiff --git a/berryPicker/farmer/test.js b/berryPicker/farmer/test.js[m
+[1mnew file mode 100644[m
+[1mindex 0000000..c66eaae[m
+[1m--- /dev/null[m
+[1m+++ b/berryPicker/farmer/test.js[m
+[36m@@ -0,0 +1,16 @@[m
+[32m+[m[32mconst { farmer } = require(".");[m
+[32m+[m[32mconst { enableAlert } = require("../Utils/Botalert");[m
+[32m+[m[32mconst { wait } = require("../Utils/util");[m
+[32m+[m[32mconst { startBot } = require("../lumberBerry/botInitialize");[m
+[32m+[m[32mconst test = async () => {[m
+[32m+[m[32m  const dcSend = (message) => {[m
+[32m+[m[32m    console.log(message);[m
+[32m+[m[32m  };[m
+[32m+[m
+[32m+[m[32m  bot = await startBot(dcSend);[m
+[32m+[m[32m  await wait(1000);[m
+[32m+[m
+[32m+[m[32m  await farmer(bot, dcSend);[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mtest();[m
+[1mdiff --git a/berryPicker/lumberBerry/Communication.js b/berryPicker/lumberBerry/Communication.js[m
+[1mindex ecd4412..648dc54 100644[m
+[1m--- a/berryPicker/lumberBerry/Communication.js[m
+[1m+++ b/berryPicker/lumberBerry/Communication.js[m
+[36m@@ -14,6 +14,7 @@[m [mconst { token, channelId, pass } = require("../Utils/config");[m
+ const { MuschroomFarmer } = require("../muschroomFarmer");[m
+ const { MuschroomFarmerMax } = require("../mushroomFarmerMax");[m
+ const { grinderAfk } = require("../attack");[m
+[32m+[m[32mconst { farmer } = require("../farmer");[m
+ [m
+ // 

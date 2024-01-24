@@ -43,6 +43,7 @@ const go = async (bot, c, distance = 2, cfg) => {
     bot.pathfinder.setMovements(defaultMove);
   }
   await bot.pathfinder.getPathTo(defaultMove, goal, 5000);
+  await wait(100);
   return new Promise(async (resolve, reject) => {
     bot.pathfinder.setGoal(goal);
     bot.once("goal_reached", () => {
@@ -306,6 +307,7 @@ const equip = (bot, itemName, dcSend) => {
     if (held) {
       if (held.name === itemName) {
         resolve();
+        console.log("held is held");
       }
     }
     if (item === undefined) {
