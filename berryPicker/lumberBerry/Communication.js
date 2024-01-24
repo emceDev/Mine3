@@ -82,11 +82,11 @@ const initializeCommunication = () => {
         await wait(4000);
         bot.chat("/login minecraft123");
         await wait(4000);
-        bot.chat("/is home bee");
-        await wait(4000);
         for (let i = 0; i < 100; i++) {
+          bot.chat("/is home bee");
+          await wait(4000);
           await honeyMan(bot, dcSend);
-          await wait(300000);
+          await wait(150000);
         }
       }
       if (content.startsWith("Guard")) {
