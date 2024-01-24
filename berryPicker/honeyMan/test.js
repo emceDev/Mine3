@@ -8,7 +8,10 @@ const test = async () => {
   };
   const bot = await startBot(dcSend);
   for (let i = 0; i < 2; i++) {
+    bot.chat("tp 40 50");
     await honeyMan(bot, dcSend);
+    await wait(4000);
+    bot.chat("tp 40 50");
   }
 };
 
