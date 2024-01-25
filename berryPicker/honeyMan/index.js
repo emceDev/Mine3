@@ -100,7 +100,7 @@ const honeyMan = async (bot, dcSend) => {
       //   const honeyLevel = hive._properties.honey_level;
       //   // honeyLevel === 5 && (await collectHoney(hive));
       // }
-    }, 5000);
+    }, 300000);
     // resolve();
   });
 };
