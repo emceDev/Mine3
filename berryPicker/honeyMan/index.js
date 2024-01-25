@@ -15,11 +15,13 @@ const honeyMan = async (bot, dcSend) => {
     let beesArray = [];
     bot.on("entitySpawn", async (bee) => {
       if (bee.name === "bee") {
-        console.log(bee);
+        // console.log(bee);
         if (!beesArray.includes(bee)) {
           beesArray.push(bee);
+          console.log("new bee", bee.uuid);
         }
         if (!feedBees.includes(bee)) {
+          console.log("feeding bee", bee.uuid);
           await equip(bot, "poppy", dcSend);
           feedBees.push(bee);
           await bot.useOn(bee);
@@ -40,6 +42,7 @@ const honeyMan = async (bot, dcSend) => {
             const entity = entities[entityId];
             const distance = entity.position.distanceTo(bot.entity.position);
             if (distance < 6 && entity.name === "bee") {
+              beesArray.push(entity);
               bees.push(entity);
             }
           }
@@ -88,19 +91,20 @@ const honeyMan = async (bot, dcSend) => {
     const hives = await findHives();
 
     await logHoney(hives);
-    dcSend(
-      `"Is it day:" ${bot.time.isDay}"have hives/bees: ", ${hives.length}, "/", ${beesArray.length}, fed:${feedBees.length}`
-    );
+    await findBees();
     setInterval(async () => {
-      dcSend(`fed bees: ${fed} `);
-      dcSend(`fed hives: ${hives.length} `);
+      let fullHives = 0;
       feedBees = [];
-      // for (const hive of hives) {
-      //   // console.log(hive);
-      //   const honeyLevel = hive._properties.honey_level;
-      //   // honeyLevel === 5 && (await collectHoney(hive));
-      // }
-    }, 300000);
+      fed = 0;
+      for (const hive of hives) {
+        // console.log(hive);
+        const honeyLevel = hive._properties.honey_level;
+        honeyLevel === 5 && fullHives++;
+      }
+      dcSend(
+        `"Is it day:" ${bot.time.isDay}"have", ${hives.length}/FullHIves:${fullHives}`
+      );
+    }, 600000);
     // resolve();
   });
 };
