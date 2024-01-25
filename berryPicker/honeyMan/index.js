@@ -11,6 +11,24 @@ const { beeCoords } = require("./honeyConfig");
 const honeyMan = async (bot, dcSend) => {
   return new Promise(async (resolve, reject) => {
     let fed = 0;
+    let feedBees = [];
+    let beesArray = [];
+    bot.on("entitySpawn", async (bee) => {
+      if (bee.name === "bee") {
+        console.log(bee);
+        if (!beesArray.includes(bee)) {
+          beesArray.push(bee);
+        }
+        if (!feedBees.includes(bee)) {
+          await equip(bot, "poppy", dcSend);
+          feedBees.push(bee);
+          await bot.useOn(bee);
+          fed = fed + 1;
+          await equip(bot, "potato", dcSend);
+        }
+      }
+    });
+
     const findBees = async () => {
       const bees = [];
       const entities = bot.entities;
@@ -47,6 +65,11 @@ const honeyMan = async (bot, dcSend) => {
         await wait(500);
       }
     };
+    // const collectHoney = async (hive) => {
+    //   await equip(bot, "shears", dcSend);
+    //   console.log("collecting:", hive);
+    //   await bot.useOn(hive);
+    // };
     const logHoney = async (hives) => {
       const honeyCombs = hives;
       const honeyLevelCounts = {};
@@ -62,17 +85,23 @@ const honeyMan = async (bot, dcSend) => {
         dcSend(`honeylvl${honeyLevel}: ${honeyLevelCounts[honeyLevel]}`);
       }
     };
-    const bees = await findBees();
     const hives = await findHives();
-    await breedBees(bees);
+
     await logHoney(hives);
     dcSend(
-      `"Is it day:" ${bot.time.isDay}"have hives/bees: ", ${
-        hives.length
-      }, "/", ${Math.floor(bees.length / 3)}, fed:${fed}`
+      `"Is it day:" ${bot.time.isDay}"have hives/bees: ", ${hives.length}, "/", ${beesArray.length}, fed:${feedBees.length}`
     );
-    await equip(bot, "potato", dcSend);
-    resolve();
+    setInterval(async () => {
+      dcSend(`fed bees: ${fed} `);
+      dcSend(`fed hives: ${hives.length} `);
+      feedBees = [];
+      // for (const hive of hives) {
+      //   // console.log(hive);
+      //   const honeyLevel = hive._properties.honey_level;
+      //   // honeyLevel === 5 && (await collectHoney(hive));
+      // }
+    }, 5000);
+    // resolve();
   });
 };
 module.exports = { honeyMan };
