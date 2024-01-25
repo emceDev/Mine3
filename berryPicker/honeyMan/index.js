@@ -101,7 +101,7 @@ const honeyMan = async (bot, dcSend) => {
       //   // honeyLevel === 5 && (await collectHoney(hive));
       // }
     }, 5000);
-    resolve();
+    // resolve();
   });
 };
 module.exports = { honeyMan };
