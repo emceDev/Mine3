@@ -18,10 +18,10 @@ const honeyMan = async (bot, dcSend) => {
         // console.log(bee);
         if (!beesArray.includes(bee)) {
           beesArray.push(bee);
-          console.log("new bee", bee.uuid);
+          // console.log("new bee", bee.uuid);
         }
         if (!feedBees.includes(bee)) {
-          console.log("feeding bee", bee.uuid);
+          // console.log("feeding bee", bee.uuid);
           await equip(bot, "poppy", dcSend);
           feedBees.push(bee);
           await bot.useOn(bee);
@@ -105,6 +105,10 @@ const honeyMan = async (bot, dcSend) => {
         `"Is it day:" ${bot.time.isDay}"have", ${hives.length}/FullHIves:${fullHives}`
       );
     }, 600000);
+    setInterval(() => {
+      console.log(`fed in last 5 min:${fed}`);
+      fed = 0;
+    }, 60000);
     // resolve();
   });
 };
