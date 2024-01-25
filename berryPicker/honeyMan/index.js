@@ -13,23 +13,6 @@ const honeyMan = async (bot, dcSend) => {
     let fed = 0;
     let feedBees = [];
     let beesArray = [];
-    bot.on("entitySpawn", async (bee) => {
-      if (bee.name === "bee") {
-        // console.log(bee);
-        if (!beesArray.includes(bee)) {
-          beesArray.push(bee);
-          // console.log("new bee", bee.uuid);
-        }
-        if (!feedBees.includes(bee)) {
-          // console.log("feeding bee", bee.uuid);
-          await equip(bot, "poppy", dcSend);
-          feedBees.push(bee);
-          await bot.useOn(bee);
-          fed = fed + 1;
-          await equip(bot, "potato", dcSend);
-        }
-      }
-    });
 
     const findBees = async () => {
       const bees = [];
@@ -41,7 +24,11 @@ const honeyMan = async (bot, dcSend) => {
           if (entities.hasOwnProperty(entityId)) {
             const entity = entities[entityId];
             const distance = entity.position.distanceTo(bot.entity.position);
-            if (distance < 6 && entity.name === "bee") {
+            if (
+              distance < 6 &&
+              entity.name === "bee" &&
+              !beesArray.includes(entity)
+            ) {
               beesArray.push(entity);
               bees.push(entity);
             }
@@ -60,19 +47,7 @@ const honeyMan = async (bot, dcSend) => {
       }
       return hives;
     };
-    const breedBees = async (bees) => {
-      await equip(bot, "poppy", dcSend);
-      for (const bee of bees) {
-        await bot.useOn(bee);
-        fed = fed++;
-        await wait(500);
-      }
-    };
-    // const collectHoney = async (hive) => {
-    //   await equip(bot, "shears", dcSend);
-    //   console.log("collecting:", hive);
-    //   await bot.useOn(hive);
-    // };
+
     const logHoney = async (hives) => {
       const honeyCombs = hives;
       const honeyLevelCounts = {};
@@ -88,28 +63,64 @@ const honeyMan = async (bot, dcSend) => {
         dcSend(`honeylvl${honeyLevel}: ${honeyLevelCounts[honeyLevel]}`);
       }
     };
-    const hives = await findHives();
 
-    await logHoney(hives);
-    await findBees();
-    setInterval(async () => {
+    const breedBees = async () => {
+      const bees = await findBees();
+      console.log("found this many bees to feed", bees.length);
+      for (const bee of bees) {
+        // if (!feedBees.includes(bee)) {
+        await equip(bot, "poppy", dcSend);
+        console.log("fed");
+        await wait(100);
+        await bot.useOn(bee);
+        fed++;
+        feedBees.push(bee);
+        await equip(bot, "potato", dcSend);
+      }
+      await equip(bot, "potato", dcSend);
+      return;
+    };
+    for (let i = 0; i < 100000; i++) {
       let fullHives = 0;
-      feedBees = [];
-      fed = 0;
+      const hives = await findHives();
+      await breedBees();
+      //get info on hives
       for (const hive of hives) {
-        // console.log(hive);
         const honeyLevel = hive._properties.honey_level;
         honeyLevel === 5 && fullHives++;
       }
-      dcSend(
-        `"Is it day:" ${bot.time.isDay}"have", ${hives.length}/FullHIves:${fullHives}`
+      console.log(
+        `During this ${
+          bot.time.isDay ? "day" : "night"
+        } session fed: ${fed} many bees`
       );
-    }, 600000);
-    setInterval(() => {
-      console.log(`fed in last 5 min:${fed}`);
+      console.log(
+        `Currently have this many hives: ${hives.length} and full: ${fullHives} `
+      );
       fed = 0;
-    }, 60000);
-    // resolve();
+      await wait(5000);
+    }
   });
 };
 module.exports = { honeyMan };
+
+// // await logHoney(hives);
+// // await findBees();
+// setInterval(async () => {
+//   let fullHives = 0;
+//   feedBees = [];
+//   fed = 0;
+//   for (const hive of hives) {
+//     // console.log(hive);
+//     const honeyLevel = hive._properties.honey_level;
+//     honeyLevel === 5 && fullHives++;
+//   }
+//   dcSend(
+//     `"Is it day:" ${bot.time.isDay}"have", ${hives.length}/FullHIves:${fullHives}`
+//   );
+// }, 600000);
+// setInterval(() => {
+//   console.log(`fed in last 5 min:${fed}`);
+//   fed = 0;
+// }, 60000);
+// // resolve();
