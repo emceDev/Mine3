@@ -77,6 +77,19 @@ const initializeCommunication = () => {
       if (content.startsWith("Lumb")) {
         LumberJackMin(bot, dcSend);
       }
+      if (content.startsWith("Afk")) {
+        const bot = await startBot(dcSend);
+        await wait(4000);
+        bot.chat(`/login ${pass}`);
+        await wait(4000);
+        bot.chat(`/zmienserwer skyblock`);
+        await wait(4000);
+        bot.chat("/is home bee");
+        // for (let i = 0; i < 100000; i++) {
+        await wait(4000);
+        dcSend("afking hard");
+        // }
+      }
       if (content.startsWith("Honey")) {
         const bot = await startBot(dcSend);
         await wait(4000);
