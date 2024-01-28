@@ -3,11 +3,10 @@ const { token } = require("./credentials");
 // const pass = "minecraft123";
 // const username = "Berserker321";
 
-const pass = "jestGrane1";
-const username = "grzesiuKartofel";
-const port = 25565;
-
-const host = "mcosada.pl";
+// const pass = "jestGrane1";
+// const username = "grzesiuKartofel";
+// const port = 25565;
+// const host = "mcosada.pl";
 
 const version = "1.20.1";
 
@@ -30,12 +29,12 @@ const fastMovemets = {
   maxDropDown: 4,
   blocksCantBreak: new Set([9, 8, 4, 46]),
 };
-// const port = 5555;
-// const host = "127.0.0.1";
-
+const port = 5555;
+const host = "127.0.0.1";
+const pass = "minecraft123";
+const username = "Berserker321";
 // const host = "iskyblock.pl";
 
-// const pass = "minecraft123";
 // const cutPoint = { x: 6122, y: 85, z: 6469 };
 // const tossingPoint = { x: 6122, y: 74, z: 6456 };
 // const startC = { x: 6111, y: 74, z: 6473 };
