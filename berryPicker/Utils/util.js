@@ -306,19 +306,21 @@ const equip = (bot, itemName, dcSend) => {
     const item = items[0];
     if (held) {
       if (held.name === itemName) {
-        resolve();
         console.log("held is held");
+        return resolve();
       }
+      console.log("held is not held", held.name, " wanted: ", itemName);
     }
-    console.log("held is not held", held.name, " wanted: ", itemName);
+    console.log("nothing held, wanted: ", itemName);
     if (item === undefined) {
+      console.log("no wanted items in inventory");
       const waitForItem = setInterval(async () => {
         const it = findItems(bot, itemName)[0];
         // const it = bot.inventory.findInventoryItem(itemName);
         if (it !== undefined) {
           clearInterval(waitForItem);
           await bot.equip(it, "hand");
-          console.log("item found");
+          console.log("item found, equipping");
           resolve();
         } else {
           dcSend("no item" + itemName);
