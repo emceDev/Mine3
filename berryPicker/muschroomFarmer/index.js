@@ -95,7 +95,7 @@ const MuschroomFarmer = async (bot, dcSend) => {
               const maxAttempts = 10; // Set a maximum number of attempts to avoid infinite loop
 
               while (!canSee && attempts < maxAttempts) {
-                await bot.dig(bot.blockInFront());
+                await bot.dig(bot.blockAtCursor(6));
                 await wait(Math.floor(Math.random() * 40) + 5);
                 canSee = bot.canSeeBlock(block);
                 attempts++;
