@@ -35,9 +35,9 @@ const MuschroomFarmer = async (bot, dcSend) => {
       console.log("Searching for mushrooms");
       return new Promise(async (resolve, reject) => {
         await wait(500);
-        const stems = await findBlocks(bot, "mushroom_stem", 20);
+        const stem = await findBlocks(bot, "mushroom_stem", 20);
         await wait(500);
-        const caps = await findBlocks(bot, "red_mushroom_block", 20);
+        const cap = await findBlocks(bot, "red_mushroom_block", 20);
         await wait(500);
         const center = coords;
 
@@ -58,30 +58,19 @@ const MuschroomFarmer = async (bot, dcSend) => {
           const randomFactor = Math.random() * 2 - 1; // Random number between -1 and 1
           const randomizedDifference = angleA - angleB + randomFactor;
 
-          // Prioritize stems over caps
-          if (a.type === "mushroom_stem" && b.type === "red_mushroom_block") {
-            return -1; // Move stem before cap
-          } else if (
-            a.type === "red_mushroom_block" &&
-            b.type === "mushroom_stem"
-          ) {
-            return 1; // Move cap after stem
-          }
-
           return randomizedDifference;
         }
-
-        shuffleArray(caps);
-        shuffleArray(stems);
-
+        shuffleArray(cap);
         // Combine stem and cap arrays and shuffle them in place
-        const coordinates = [...stems, ...caps];
+        const coordinates = [...cap];
 
         // Sort the shuffled array using the sorting function
         coordinates.sort(compareForSpiralSorting);
 
         // Now 'coordinates' is randomly shuffled and sorted
-        resolve(coordinates);
+        // console.log(coordinates);
+        const fullCoords = [...stem, ...coordinates];
+        resolve(fullCoords);
       });
     };
 
