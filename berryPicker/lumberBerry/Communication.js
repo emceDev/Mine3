@@ -16,6 +16,7 @@ const { MuschroomFarmerMax } = require("../mushroomFarmerMax");
 const { grinderAfk } = require("../attack");
 const { farmer } = require("../farmer");
 const { honeyMan } = require("../honeyMan");
+const { blockFinder } = require("../blockFInder");
 
 // const intents = new Intents
 let channel = undefined;
@@ -115,6 +116,17 @@ const initializeCommunication = () => {
         await wait(4000);
 
         await grinderAfk(bot, dcSend);
+      }
+      if (content.startsWith("find")) {
+        const bot = await startBot(dcSend);
+        await wait(4000);
+        bot.chat("/login minecraft123");
+        await wait(4000);
+        bot.chat("/zmienserwer skyblock");
+        await wait(4000);
+        bot.chat("/is home");
+        await wait(4000);
+        await blockFinder(bot, dcSend);
       }
       if (content.startsWith("Attack")) {
         bot.chat("/is home 3");
