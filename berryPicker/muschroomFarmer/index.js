@@ -75,7 +75,7 @@ const MuschroomFarmer = async (bot, dcSend) => {
     };
 
     const harvestMushroom = async (shroms) => {
-      // console.log(shroms.length);
+      console.log("harvesting");
       dcSend("found:" + shroms.length + "for:" + shroms.length * 9);
 
       return new Promise(async (resolve, reject) => {
