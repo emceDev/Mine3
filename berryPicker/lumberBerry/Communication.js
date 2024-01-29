@@ -134,7 +134,7 @@ const initializeCommunication = () => {
       if (content.startsWith("Mush")) {
         const bot = await startBot(dcSend);
         await wait(4000);
-        bot.chat("/login minecraft123");
+        bot.chat(`/login ${pass}`);
         await wait(4000);
         bot.chat("/zmienserwer skyblock");
         await wait(4000);
