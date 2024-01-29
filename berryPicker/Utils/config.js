@@ -29,7 +29,7 @@ const fastMovemets = {
   maxDropDown: 4,
   blocksCantBreak: new Set([9, 8, 4, 46]),
 };
-const port = 5555;
+const port = 25565;
 const host = "127.0.0.1";
 const pass = "minecraft123";
 const username = "Berserker321";
