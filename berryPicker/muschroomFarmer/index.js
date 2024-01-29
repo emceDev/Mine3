@@ -96,6 +96,7 @@ const MuschroomFarmer = async (bot, dcSend) => {
 
               while (!canSee && attempts < maxAttempts) {
                 await bot.dig(bot.blockAtCursor(6));
+                await bot.lookAt(block.position);
                 await wait(Math.floor(Math.random() * 40) + 5);
                 canSee = bot.canSeeBlock(block);
                 attempts++;
