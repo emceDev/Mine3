@@ -84,7 +84,7 @@ const MuschroomFarmer = async (bot, dcSend) => {
         for (const shrom of shroms) {
           blocksCut = blocksCut + 1;
           const block = bot.blockAt(shrom);
-          const canSee = bot.canSeeBlock(block);
+          let canSee = bot.canSeeBlock(block);
 
           console.log("digging block", block.name, "can see? ", canSee);
           if (canSee !== null) {
