@@ -311,7 +311,7 @@ const equip = (bot, itemName, dcSend) => {
       }
       console.log("held is not held", held.name, " wanted: ", itemName);
     }
-    console.log("nothing held, wanted: ", itemName);
+    console.log("wanted: ", itemName);
     if (item === undefined) {
       console.log("no wanted items in inventory");
       const waitForItem = setInterval(async () => {

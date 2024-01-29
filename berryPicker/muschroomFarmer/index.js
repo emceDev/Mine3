@@ -85,6 +85,7 @@ const MuschroomFarmer = async (bot, dcSend) => {
           blocksCut = blocksCut + 1;
           const block = bot.blockAt(shrom);
           await wait(Math.floor(Math.random() * 40) + 5);
+          console.log("digging block", block.name);
           await bot.dig(block);
         }
         resolve();
