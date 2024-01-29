@@ -91,11 +91,25 @@ const MuschroomFarmer = async (bot, dcSend) => {
             if (canSee !== false) {
               await bot.dig(block);
             } else {
-              while (!canSee) {
-                await bot.dig(bot.blockAtCursor(5));
+              let attempts = 0;
+              const maxAttempts = 10; // Set a maximum number of attempts to avoid infinite loop
+
+              while (!canSee && attempts < maxAttempts) {
+                await bot.dig(bot.blockInFront());
                 await wait(Math.floor(Math.random() * 40) + 5);
+                canSee = bot.canSeeBlock(block);
+                attempts++;
               }
-              await bot.dig(block);
+
+              if (canSee) {
+                console.log("Bot can see the target block again.");
+                await bot.dig(block);
+              } else {
+                console.log(
+                  "Bot could not see the target block after multiple attempts."
+                );
+                // Handle the case where the target block is not visible after multiple attempts
+              }
             }
           }
 
