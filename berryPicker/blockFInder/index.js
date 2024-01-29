@@ -24,7 +24,8 @@ const blockFinder = async (bot, dcSend) => {
     await go(bot, searchCoords, 1, safeMovements);
     bot.once("spawn", async () => {
       console.log("spawned");
-      const arra = await blockArray("ancient_debris", 100);
+      await wait(9000);
+      const arra = await blockArray("ancient_debris", 1000);
       console.log("Found:", arra.length);
       for (const block of arra) {
         dcSend(block.position);
