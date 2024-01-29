@@ -58,7 +58,7 @@ const initializeCommunication = () => {
     // Redirect Discord messages to in-game chat
     client.on("messageCreate", async (message) => {
       const content = message.content;
-
+      botEvents();
       if (content.startsWith("start")) {
         bot = await startBot(dcSend);
         botEvents(bot);
@@ -147,7 +147,6 @@ const initializeCommunication = () => {
           console.log("profit", profit);
         }
       }
-
       if (content.startsWith("Berry")) {
         bot.chat("/is home 3");
         await equip(bot, "iron_axe", dcSend);
