@@ -32,7 +32,7 @@ const MuschroomFarmer = async (bot, dcSend) => {
     enableAlert(bot, ["Jagodziarek"], dcSend);
     //   console.log(bot.inventory.items());
     const getMushrooms = async () => {
-      console.log("getting mushrooms");
+      console.log("Searching for mushrooms");
       return new Promise(async (resolve, reject) => {
         await wait(500);
         const stem = await findBlocks(bot, "mushroom_stem", 20);
@@ -96,7 +96,6 @@ const MuschroomFarmer = async (bot, dcSend) => {
         await go(bot, closeCoords, 1, safeMovements);
         await shouldSupply(bot, "red_mushroom", 1, chestCoords, 64);
         await sowPlant(bot, coords, "red_mushroom", dcSend);
-        console.log("tring to aplly");
         await shouldSupply(bot, "bone_meal", 20, chestCoords, 256);
         await applyBoneMeal(bot, coords, dcSend, 100).then(
           (used) => (boneMealUsed = boneMealUsed + used)
