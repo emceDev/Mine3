@@ -69,7 +69,7 @@ const MuschroomFarmer = async (bot, dcSend) => {
         coordinates.sort(compareForSpiralSorting);
 
         // Now 'coordinates' is randomly shuffled and sorted
-        console.log(coordinates);
+        // console.log(coordinates);
         resolve(coordinates);
       });
     };

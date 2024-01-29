@@ -310,7 +310,7 @@ const equip = (bot, itemName, dcSend) => {
         console.log("held is held");
       }
     }
-    console.log("held is not held");
+    console.log("held is not held", held.name, " wanted: ", itemName);
     if (item === undefined) {
       const waitForItem = setInterval(async () => {
         const it = findItems(bot, itemName)[0];
@@ -326,7 +326,7 @@ const equip = (bot, itemName, dcSend) => {
         }
       }, 10000);
     } else {
-      console.log("equipping");
+      console.log("equipping", item.name);
       await bot.equip(item, "hand");
       resolve();
     }
