@@ -88,7 +88,15 @@ const MuschroomFarmer = async (bot, dcSend) => {
 
           console.log("digging block", block.name, "can see? ", canSee);
           if (canSee !== null) {
-            await bot.dig(block);
+            if (canSee !== false) {
+              await bot.dig(block);
+            } else {
+              while (!canSee) {
+                await bot.dig(bot.blockAtCursor(5));
+                await wait(Math.floor(Math.random() * 40) + 5);
+              }
+              await bot.dig(block);
+            }
           }
 
           await wait(Math.floor(Math.random() * 40) + 5);
