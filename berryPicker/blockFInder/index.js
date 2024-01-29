@@ -19,16 +19,16 @@ const blockFinder = async (bot, dcSend) => {
     };
     bot.on("whisper", async (u, m) => {
       console.log("Searching:");
+    });
+
+    await go(bot, searchCoords, 1, safeMovements);
+    bot.once("spawn", async () => {
+      console.log("spawned");
       const arra = await blockArray("ancient_debris", 100);
       console.log("Found:", arra.length);
       for (const block of arra) {
         dcSend(block.position);
       }
-    });
-
-    await go(bot, searchCoords, 1, safeMovements);
-    bot.once("spawn", () => {
-      console.log("spawned");
     });
 
     await wait(10000);
