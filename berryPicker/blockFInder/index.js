@@ -25,11 +25,13 @@ const blockFinder = async (bot, dcSend) => {
     bot.once("spawn", async () => {
       console.log("spawned");
       await wait(9000);
-      const arra = await blockArray("ancient_debris", 1000);
+      const arra = await blockArray("ancient_debris", 100);
       console.log("Found:", arra.length);
-      for (const block of arra) {
-        dcSend(block.position);
-      }
+      const arra2 = await blockArray("ancient_debris", 100);
+      console.log("Found2:", arra2.length);
+      // for (const block of arra) {
+      //   dcSend(block.position);
+      // }
     });
 
     await wait(10000);
