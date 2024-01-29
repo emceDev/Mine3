@@ -58,7 +58,7 @@ const initializeCommunication = () => {
     // Redirect Discord messages to in-game chat
     client.on("messageCreate", async (message) => {
       const content = message.content;
-      botEvents();
+
       if (content.startsWith("start")) {
         bot = await startBot(dcSend);
         botEvents(bot);
@@ -133,6 +133,7 @@ const initializeCommunication = () => {
       }
       if (content.startsWith("Mush")) {
         const bot = await startBot(dcSend);
+        botEvents(bot);
         await wait(4000);
         bot.chat(`/login ${pass}`);
         await wait(4000);
@@ -239,7 +240,7 @@ const initializeCommunication = () => {
     // channel.send("messages");
     channel.send(JSON.stringify(message));
   }
-  const botEvents = () => {
+  const botEvents = (bot) => {
     bot.on("whisper", (username, message) => {
       // Ignore messages from the bot itself
       if (username === bot.username) return;
