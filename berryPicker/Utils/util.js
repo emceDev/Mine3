@@ -309,26 +309,27 @@ const equip = (bot, itemName, dcSend) => {
         resolve();
         console.log("held is held");
       }
-    }
-    console.log("held is not held", held.name, " wanted: ", itemName);
-    if (item === undefined) {
-      const waitForItem = setInterval(async () => {
-        const it = findItems(bot, itemName)[0];
-        // const it = bot.inventory.findInventoryItem(itemName);
-        if (it !== undefined) {
-          clearInterval(waitForItem);
-          await bot.equip(it, "hand");
-          console.log("item found");
-          resolve();
-        } else {
-          dcSend("no item" + itemName);
-          dcSend("begging for item" + itemName);
-        }
-      }, 10000);
     } else {
-      console.log("equipping", item.name);
-      await bot.equip(item, "hand");
-      resolve();
+      console.log("held is not held", held.name, " wanted: ", itemName);
+      if (item === undefined) {
+        const waitForItem = setInterval(async () => {
+          const it = findItems(bot, itemName)[0];
+          // const it = bot.inventory.findInventoryItem(itemName);
+          if (it !== undefined) {
+            clearInterval(waitForItem);
+            await bot.equip(it, "hand");
+            console.log("item found");
+            resolve();
+          } else {
+            dcSend("no item" + itemName);
+            dcSend("begging for item" + itemName);
+          }
+        }, 10000);
+      } else {
+        console.log("equipping", item.name);
+        await bot.equip(item, "hand");
+        resolve();
+      }
     }
   });
 };
