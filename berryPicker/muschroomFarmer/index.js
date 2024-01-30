@@ -73,7 +73,6 @@ const MuschroomFarmer = async (bot, dcSend) => {
         resolve(fullCoords);
       });
     };
-
     const harvestMushroom = async (shroms) => {
       console.log("harvesting");
       dcSend("found:" + shroms.length + "for:" + shroms.length * 9);
@@ -119,13 +118,47 @@ const MuschroomFarmer = async (bot, dcSend) => {
         resolve();
       });
     };
-    //tosing disabled
-    (await bot.inventory.emptySlotCount()) < 5 &&
-      (await tosser(bot, "red_mushroom_block", tossingPoint));
-    await plantMushroom();
-    console.log("planted");
-    await harvestMushroom(await getMushrooms());
+    const freeEQ = async () => {
+      await tosser(bot, "red_mushroom_block", tossingPoint);
+      await tosser(bot, "mushroom_stem", tossingPoint);
+
+      // await tosser(bot, "red_mushroom_block", tossingPoint);
+    };
+    const saveTool = async (itemName) => {
+      return bot.inventory.items().filter(async (item) => {
+        if (item && item.name === itemName) {
+          console.log("have such an item");
+          if (item.nbt.value.Damage.value + 100 >= item.maxDurability) {
+            console.log("found damaged item");
+            await go(
+              bot,
+              {
+                x: tossingPoint.x,
+                y: tossingPoint.y,
+                z: tossingPoint.z,
+              },
+              1
+            );
+            await bot.lookAt(
+              new Vec3(tossingPoint.x, tossingPoint.y + 2, tossingPoint.z + 2),
+              true
+            );
+            console.log("tossing to save");
+            await bot.tossStack(item);
+            return;
+          }
+        }
+      });
+    };
+
+    (await bot.inventory.emptySlotCount()) < 5 && (await freeEQ());
+    await saveTool("diamond_axe");
+    await harvestMushroom(await getMushrooms()).catch((err) =>
+      console.log("error")
+    );
     console.log("harvested");
+    await plantMushroom().catch((err) => console.log("error"));
+    console.log("planted");
     profit = blocksCut * 9;
     dcSend("profit:" + profit);
     resolve(profit);
