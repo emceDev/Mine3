@@ -90,7 +90,7 @@ const MuschroomFarmer = async (bot, dcSend) => {
             .then((x) => (blocksCut = blocksCut + 1))
             .catch((err) => unseen.push(block));
 
-          await wait(Math.floor(Math.random() * 40) + 5);
+          await wait(Math.floor(Math.random() * 200) + 100);
         }
         for (const shrom of unseen) {
           console.log("unsese");
@@ -100,7 +100,7 @@ const MuschroomFarmer = async (bot, dcSend) => {
             .dig(block, true, "raycast")
             .catch((err) => console.log("cannod dig"));
 
-          await wait(Math.floor(Math.random() * 40) + 5);
+          await wait(Math.floor(Math.random() * 200) + 100);
         }
         resolve();
       });
