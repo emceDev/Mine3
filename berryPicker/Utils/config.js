@@ -7,8 +7,8 @@ const pass = "jestGrane1";
 // const username = "Berserker321";
 // const pass = "minecraft123";
 
-// const host = "127.0.0.1";
-const host = "mcosada.pl";
+const host = "127.0.0.1";
+// const host = "mcosada.pl";
 // const host = "iskyblock.pl";
 const version = "1.20.1";
 

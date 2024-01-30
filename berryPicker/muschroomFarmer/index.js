@@ -81,15 +81,24 @@ const MuschroomFarmer = async (bot, dcSend) => {
       return new Promise(async (resolve, reject) => {
         await shouldSupply(bot, "diamond_axe", 1, chestCoords, 1);
         await equip(bot, "diamond_axe", dcSend);
+        let unseen = [];
         for (const shrom of shroms) {
+          const block = bot.blockAt(shrom);
+
+          await bot
+            .dig(block, true, "raycast")
+            .then((x) => (blocksCut = blocksCut + 1))
+            .catch((err) => unseen.push(block));
+
+          await wait(Math.floor(Math.random() * 40) + 5);
+        }
+        for (const shrom of unseen) {
+          console.log("unsese");
           blocksCut = blocksCut + 1;
           const block = bot.blockAt(shrom);
-          let canSee = bot.canSeeBlock(block);
-
-          console.log("digging block", block.name, "can see? ", canSee);
-          if (canSee !== null && canSee !== false) {
-            await bot.dig(block);
-          }
+          await bot
+            .dig(block, true, "raycast")
+            .catch((err) => console.log("cannod dig"));
 
           await wait(Math.floor(Math.random() * 40) + 5);
         }
