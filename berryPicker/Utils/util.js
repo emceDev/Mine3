@@ -261,7 +261,7 @@ const sowPlant = async (bot, plantCoords, plantName, dcSend) => {
     await equip(bot, itemName, dcSend);
     await bot
       .placeBlock(blockToSow, new Vec3(0, 1, 0))
-      .catch((err) => console.log("plant error"));
+      .catch((err) => reject("plant error"));
 
     setTimeout(() => {
       resolve();

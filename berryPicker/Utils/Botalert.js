@@ -25,7 +25,6 @@ const enableAlert = (bot, whitelist, dcSend) => {
         );
         clearInterval(scan);
         bot.quit();
-        dcSend("Someone joined the island.");
       }
     }
   }, 2000);

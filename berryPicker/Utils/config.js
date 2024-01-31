@@ -32,18 +32,6 @@ const fastMovemets = {
   blocksCantBreak: new Set([9, 8, 4, 46]),
 };
 
-// const cutPoint = { x: 6122, y: 85, z: 6469 };
-// const tossingPoint = { x: 6122, y: 74, z: 6456 };
-// const startC = { x: 6111, y: 74, z: 6473 };
-// const endC = { x: 6112, y: 74, z: 6474 };
-
-// const port = 25565;
-// const cutPoint = { x: 6122, y: 85, z: 6469 };
-// const tossingPoint = { x: 6122, y: 74, z: 6456 };
-// const startC = { x: 6111, y: 74, z: 6473 };
-// const endC = { x: 6112, y: 74, z: 6474 };
-// const mushC = {x:76104,y:65,z:7}
-// const muchChestC = {x:76105,y:66,z7}
 module.exports = {
   username,
   pass,
