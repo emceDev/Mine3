@@ -3,36 +3,18 @@ const {
   goals: { GoalNear },
 } = require("mineflayer-pathfinder");
 const { Vec3 } = require("vec3");
-const { equip, go, wait } = require("../Utils/util");
-const { enableAlert } = require("../Utils/Botalert");
+const { equip, go, wait, getHostileEntities } = require("../Utils/util");
 
 const grinderAfk = async (bot, dcSend) => {
   return new Promise(async (resolve, reject) => {
     const int = setInterval(attackEntitiesInRange, 1000);
     let swings = 0;
     // Function to find and attack entities within the specified distance
-    const getEntitiesToAttack = async () => {
-      let entitiesToAttack = [];
-      const entities = bot.entities;
-      if (entities.length <= 1) {
-        return [0];
-      } else {
-        for (const entityId in entities) {
-          if (entities.hasOwnProperty(entityId)) {
-            const entity = entities[entityId];
-            const distance = entity.position.distanceTo(bot.entity.position);
-            if (distance < 6 && entity.kind === "Hostile mobs") {
-              entitiesToAttack.push(entity);
-            }
-          }
-        }
-      }
-      return entitiesToAttack;
-    };
+
     async function attackEntitiesInRange() {
-      const nearbyEntities = await getEntitiesToAttack();
+      const nearbyEntities = await getHostileEntities();
       await equip(bot, "diamond_sword", dcSend);
-      if (nearbyEntities.length > 0 && swings < 400) {
+      if (nearbyEntities.length > 0 && swings < 100) {
         const targetEntity = nearbyEntities[0];
         bot.lookAt(targetEntity.position.offset(0, targetEntity.height, 0));
         bot.attack(targetEntity);

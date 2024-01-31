@@ -157,6 +157,36 @@ const initializeCommunication = () => {
           console.log("profit", profit);
         }
       }
+      if (content.startsWith("Gush")) {
+        const bot = await startBot(dcSend);
+        botEvents(bot);
+        await wait(4000);
+        bot.chat(`/login ${pass}`);
+        await wait(4000);
+        bot.chat("/zmienserwer skyblock");
+        await wait(4000);
+        bot.chat("/is home 5");
+        await wait(4000);
+        let profit = 0;
+        console.log("earned");
+        bot.on("death", () => {
+          dcSend("I died x.x");
+        });
+        enableAlert(bot, ["Jagodziarek"], dcSend);
+        for (let i = 0; i < 1000; i++) {
+          if (i % 15 === 0) {
+            await grinderAfk();
+          } else {
+            profit += await MuschroomFarmer(bot, dcSend).catch((err) =>
+              dcSend("sth fcked up")
+            );
+            if (i % 20 === 0) {
+              dcSend(profit);
+            }
+            console.log("profit", profit);
+          }
+        }
+      }
       if (content.startsWith("Berry")) {
         bot.chat("/is home 3");
         await equip(bot, "iron_axe", dcSend);

@@ -241,6 +241,24 @@ const applyBoneMeal = async (bot, coords, dcSend, interval = 1000) => {
     }
   });
 };
+const getHostileEntities = async (bot) => {
+  let entitiesToAttack = [];
+  const entities = bot.entities;
+  if (entities.length <= 1) {
+    return [0];
+  } else {
+    for (const entityId in entities) {
+      if (entities.hasOwnProperty(entityId)) {
+        const entity = entities[entityId];
+        const distance = entity.position.distanceTo(bot.entity.position);
+        if (distance < 6 && entity.kind === "Hostile mobs") {
+          entitiesToAttack.push(entity);
+        }
+      }
+    }
+  }
+  return entitiesToAttack;
+};
 const sowPlant = async (bot, plantCoords, plantName, dcSend) => {
   console.log("sowPlant");
   return new Promise(async (resolve, reject) => {
@@ -369,4 +387,5 @@ module.exports = {
   sowPlant,
   withdrawItem,
   shouldSupply,
+  getHostileEntities,
 };
