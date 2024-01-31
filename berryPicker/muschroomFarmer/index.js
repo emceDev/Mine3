@@ -160,7 +160,7 @@ const MuschroomFarmer = async (bot, dcSend) => {
     await plantMushroom().catch((err) => console.log("error"));
     console.log("planted");
     profit = blocksCut * 9;
-    dcSend("profit:" + profit);
+    // dcSend("profit:" + profit);
     resolve(profit);
   });
 };

@@ -144,7 +144,12 @@ const initializeCommunication = () => {
         let profit = 0;
         console.log("earned");
         for (let i = 0; i < 100; i++) {
-          profit += await MuschroomFarmer(bot, dcSend);
+          profit += await MuschroomFarmer(bot, dcSend).catch((err) =>
+            dcSend("sth fcked up")
+          );
+          if (i / 10) {
+            dcSend(profit);
+          }
           console.log("profit", profit);
         }
       }
