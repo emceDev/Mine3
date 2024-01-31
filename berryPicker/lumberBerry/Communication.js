@@ -147,7 +147,7 @@ const initializeCommunication = () => {
           profit += await MuschroomFarmer(bot, dcSend).catch((err) =>
             dcSend("sth fcked up")
           );
-          if (i % 10) {
+          if (i % 20) {
             dcSend(profit);
           }
           console.log("profit", profit);
