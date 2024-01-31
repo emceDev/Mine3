@@ -257,7 +257,7 @@ const initializeCommunication = () => {
       console.log("end", res);
     });
     bot.on("death", () => {
-      channel.send("I died x.x");
+      dcSend("I died x.x");
     });
   };
   // Login Discord bot
