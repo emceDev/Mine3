@@ -175,7 +175,10 @@ const initializeCommunication = () => {
         enableAlert(bot, ["Jagodziarek"], dcSend);
         for (let i = 0; i < 1000; i++) {
           if (i % 15 === 0) {
+            bot.chat("/is home 4");
             await grinderAfk();
+            bot.chat("/is home 5");
+            await wait(4000);
           } else {
             profit += await MuschroomFarmer(bot, dcSend).catch((err) =>
               dcSend("sth fcked up")
