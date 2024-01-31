@@ -120,8 +120,8 @@ const MuschroomFarmer = async (bot, dcSend) => {
       });
     };
     const freeEQ = async () => {
-      await tosser(bot, "red_mushroom_block", tossingPoint);
-      await tosser(bot, "mushroom_stem", tossingPoint);
+      await tosser(bot, "red_mushroom_block", closeCoords);
+      await tosser(bot, "mushroom_stem", closeCoords);
 
       // await tosser(bot, "red_mushroom_block", tossingPoint);
     };
