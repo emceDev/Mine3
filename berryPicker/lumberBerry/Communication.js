@@ -143,6 +143,10 @@ const initializeCommunication = () => {
         await wait(4000);
         let profit = 0;
         console.log("earned");
+        bot.on("death", () => {
+          dcSend("I died x.x");
+        });
+        enableAlert(bot, ["Jagodziarek"], dcSend);
         for (let i = 0; i < 100; i++) {
           profit += await MuschroomFarmer(bot, dcSend).catch((err) =>
             dcSend("sth fcked up")

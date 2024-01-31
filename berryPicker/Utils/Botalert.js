@@ -15,25 +15,18 @@ const enableAlert = (bot, whitelist, dcSend) => {
       );
     });
 
-    let foundNonWhitelistedPlayer = false;
-
     for (const player of nearbyPlayers) {
       // Handle the detected player here
 
       // Check if the detected player is not on the whitelist
       if (!whitelist.includes(player.username)) {
-        foundNonWhitelistedPlayer = true;
+        dcSend(
+          `Detected player: ${player.username} at position: ${player.position}`
+        );
+        clearInterval(scan);
+        bot.quit();
+        dcSend("Someone joined the island.");
       }
-    }
-
-    // Quit the bot only if a non-whitelisted player is found within the range
-    if (foundNonWhitelistedPlayer) {
-      dcSend(
-        `Detected player: ${player.username} at position: ${player.position}`
-      );
-      clearInterval(scan);
-      bot.quit();
-      dcSend("Someone joined the island.");
     }
   }, 2000);
 };

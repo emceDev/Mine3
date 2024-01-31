@@ -29,7 +29,6 @@ const MuschroomFarmer = async (bot, dcSend) => {
   let profit = 0;
   console.log("farmer started");
   return new Promise(async (resolve, reject) => {
-    enableAlert(bot, ["Jagodziarek"], dcSend);
     //   console.log(bot.inventory.items());
     const getMushrooms = async () => {
       console.log("Searching for mushrooms");
