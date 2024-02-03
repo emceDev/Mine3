@@ -6,7 +6,6 @@ const { Vec3 } = require("vec3");
 const { equip, go, wait, shouldSupply, findBlocks } = require("../Utils/util");
 const { enableAlert } = require("../Utils/Botalert");
 const {
-  farmlandStart,
   farmlandCoordsStart,
   farmlandCoordsEnd,
   tool,
@@ -17,17 +16,22 @@ const { safeMovements } = require("../Utils/config");
 const farmer = async (bot, dcSend) => {
   return new Promise(async (resolve, reject) => {
     // enableAlert(bot, ["Jagodziarek"], dcSend);
-    async function getDirtBlocksBetweenCoordinates() {
-      const dirt = await findBlocks(bot, "dirt", 50);
-      const farmlands = await findBlocks(bot, "farmland", 50);
-      const dirtBlocks = [...dirt, ...farmlands];
-      console.log(dirtBlocks);
-      const filteredArray = dirtBlocks.filter(
+    async function getBlocksBetweenCoordinates(
+      bot,
+      blockName,
+      range,
+      farmlandCoordsStart,
+      farmlandCoordsEnd
+    ) {
+      const blocks = await findBlocks(bot, blockName, range);
+      const filteredArray = blocks.filter(
         (vec3) =>
           vec3.y >= farmlandCoordsStart.y &&
           vec3.y <= farmlandCoordsEnd.y &&
           vec3.x >= farmlandCoordsStart.x &&
-          vec3.x <= farmlandCoordsEnd.x
+          vec3.x <= farmlandCoordsEnd.x &&
+          vec3.z >= farmlandCoordsStart.z &&
+          vec3.z <= farmlandCoordsEnd.z
       );
       filteredArray.sort((a, b) => {
         if (a.y !== b.y) {
@@ -35,7 +39,6 @@ const farmer = async (bot, dcSend) => {
         }
         return a.x - b.x;
       });
-      // console.log(filteredArray);
       return filteredArray;
     }
 
@@ -46,14 +49,10 @@ const farmer = async (bot, dcSend) => {
         const planted = await bot.blockAt(
           new Vec3(coords.x, coords.y + 1, coords.z)
         );
-        // console.log(planted);
-        // console.log("asdfasd");
-        // console.log(dirt);
-        if (planted.name !== "air") {
-          console.log("already planted");
-          resolve();
-          return;
-        } else if (dirt && dirt.name === "farmland") {
+        if (planted.metadata === 7) {
+          await bot.dig(planted);
+        }
+        if (dirt && dirt.name === "farmland") {
           console.log("Farmland already present.");
         } else {
           console.log("Need to till the soil.");
@@ -78,16 +77,55 @@ const farmer = async (bot, dcSend) => {
           .then((x) => resolve());
       });
     };
-    const toSow = await getDirtBlocksBetweenCoordinates();
-    for (const block of toSow) {
-      console.log("go", block);
-      await wait(100);
-      await go(bot, { x: block.x, y: block.y, z: block.z }, 4, safeMovements);
-      console.log("sow");
-      await wait(100);
-      await sowPlant("potato", block);
-      await wait(100);
+    const farmland = await getBlocksBetweenCoordinates(
+      bot,
+      "farmland",
+      100,
+      farmlandCoordsStart,
+      farmlandCoordsEnd
+    );
+    const dirt = await getBlocksBetweenCoordinates(
+      bot,
+      "dirt",
+      100,
+      farmlandCoordsStart,
+      farmlandCoordsEnd
+    );
+    const plantArea = [...farmland, ...dirt];
+    let plants = plantArea.length;
+    let grownPlants = 0;
+    let notPlanted = 0;
+    let growing = 0;
+    let plantedNow = 0;
+    let harvestedNow = 0;
+    console.log("plant space: ", plants);
+    console.log("not planted: ", notPlanted);
+    console.log("grown: ", grownPlants);
+    console.log("growing: ", growing);
+    for (const block of plantArea) {
+      // const soil = bot.blockAt(new Vec3(block.x, block.y + 1, block.z));
+      const plant = bot.blockAt(new Vec3(block.x, block.y + 1, block.z));
+      await wait(200);
+      if (plant.name === "air") {
+        notPlanted++;
+        await go(bot, block, 5, safeMovements);
+        await sowPlant("potato", block);
+        plantedNow++;
+      } else {
+        if (plant.metadata === 7) {
+          console.log("groooown");
+          grownPlants++;
+          await go(bot, block, 2, safeMovements);
+          await sowPlant("potato", block);
+          plantedNow++;
+          harvestedNow++;
+        } else {
+          growing++;
+        }
+      }
     }
+
+    resolve();
   });
 };
 

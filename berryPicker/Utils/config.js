@@ -17,7 +17,7 @@ const channelId = "833669360069509160";
 const safeMovements = {
   allowSprinting: false,
   allowParkour: false,
-  canDig: true,
+  canDig: false,
   allow1by1towers: false,
   maxDropDown: 2,
   blocksCantBreak: new Set([9, 8, 4, 46]),

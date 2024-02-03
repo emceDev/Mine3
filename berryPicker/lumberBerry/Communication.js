@@ -69,9 +69,9 @@ const initializeCommunication = () => {
       if (content.startsWith("Farm")) {
         const bot = await startBot(dcSend);
         await wait(4000);
-        bot.chat("/login minecraft123");
+        bot.chat(`/login ${pass}`);
         await wait(4000);
-        bot.chat("/is home 4");
+        bot.chat("/is home 8");
         await wait(6000);
         await farmer(bot, dcSend);
       }
