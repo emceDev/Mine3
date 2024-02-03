@@ -37,6 +37,9 @@ const farmer = async (bot, dcSend) => {
         if (a.y !== b.y) {
           return a.y - b.y;
         }
+        if (a.x === b.x) {
+          return a.z - b.z;
+        }
         return a.x - b.x;
       });
       return filteredArray;
