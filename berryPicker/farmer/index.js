@@ -28,10 +28,10 @@ const farmer = async (bot, dcSend) => {
         (vec3) =>
           vec3.y >= farmlandCoordsStart.y &&
           vec3.y <= farmlandCoordsEnd.y &&
-          vec3.x >= farmlandCoordsStart.x &&
-          vec3.x <= farmlandCoordsEnd.x &&
           vec3.z >= farmlandCoordsStart.z &&
-          vec3.z <= farmlandCoordsEnd.z
+          vec3.z <= farmlandCoordsEnd.z &&
+          vec3.x >= farmlandCoordsStart.x &&
+          vec3.x <= farmlandCoordsEnd.x
       );
       filteredArray.sort((a, b) => {
         if (a.y !== b.y) {
