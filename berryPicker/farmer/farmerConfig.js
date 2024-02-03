@@ -14,10 +14,10 @@
 // const chestCoords = { x: 76109, y: -60, z: 8 };
 // const tool = "diamond_hoe";
 
-const farmlandCoordsStart = { x: 76083, y: 58, z: -13 };
-const farmlandCoordsEnd = { x: 76109, y: 57, z: 13 };
+const farmlandCoordsStart = { x: 76083, y: 57, z: -13 };
+const farmlandCoordsEnd = { x: 76109, y: 59, z: 13 };
 const tossingPoint = { x: 76105, y: 59, z: -7 };
-const chestCoords = { x: 76108, y: 59, z: -11 };
+const chestCoords = { x: 76095, y: 62, z: 1 };
 const tool = "diamond_hoe";
 
 module.exports = {

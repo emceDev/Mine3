@@ -80,14 +80,14 @@ const farmer = async (bot, dcSend) => {
     const farmland = await getBlocksBetweenCoordinates(
       bot,
       "farmland",
-      100,
+      50,
       farmlandCoordsStart,
       farmlandCoordsEnd
     );
     const dirt = await getBlocksBetweenCoordinates(
       bot,
       "dirt",
-      100,
+      50,
       farmlandCoordsStart,
       farmlandCoordsEnd
     );
