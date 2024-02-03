@@ -12,6 +12,7 @@ const {
   chestCoords,
 } = require("./farmerConfig.js");
 const { safeMovements } = require("../Utils/config");
+const { sorter } = require("../berryPicker/util");
 
 const farmer = async (bot, dcSend) => {
   return new Promise(async (resolve, reject) => {
@@ -87,15 +88,7 @@ const farmer = async (bot, dcSend) => {
       farmlandCoordsEnd
     );
     const blocksUnsort = [...farmland, ...dirt];
-    const plantArea = blocksUnsort.sort((a, b) => {
-      if (a.y !== b.y) {
-        return a.y - b.y;
-      }
-      if (a.x === b.x) {
-        return a.z - b.z;
-      }
-      return a.x - b.x;
-    });
+    const plantArea = sorter(blocksUnsort);
     let plants = plantArea.length;
     let grownPlants = 0;
     let notPlanted = 0;
@@ -106,29 +99,57 @@ const farmer = async (bot, dcSend) => {
     console.log("not planted: ", notPlanted);
     console.log("grown: ", grownPlants);
     console.log("growing: ", growing);
-    for (const block of plantArea) {
-      // const soil = bot.blockAt(new Vec3(block.x, block.y + 1, block.z));
-      const plant = bot.blockAt(new Vec3(block.x, block.y + 1, block.z));
-      await wait(200);
-      if (plant.name === "air") {
-        notPlanted++;
-        await go(bot, block, 5, safeMovements);
-        await sowPlant("potato", block);
-        plantedNow++;
-      } else {
-        if (plant.metadata === 7) {
-          console.log("groooown");
-          grownPlants++;
-          await go(bot, block, 2, safeMovements);
-          await sowPlant("potato", block);
-          plantedNow++;
-          harvestedNow++;
+    const farm = async () => {
+      const checkX = (a, b, toggle) => {
+        const curr = bot.blockAt(a).position.x;
+        const next = bot.blockAt(b).position.x;
+        if (curr !== next) {
+          return true;
+        } else if (toggle % 4 === 0) {
+          return true;
         } else {
-          growing++;
+          return false;
         }
-      }
-    }
+      };
+      return new Promise(async (resolve, reject) => {
+        let toggle = 0;
+        let i = 0;
+        for (const block of plantArea) {
+          const plant = bot.blockAt(new Vec3(block.x, block.y + 1, block.z));
+          const ifGo =
+            plantArea[i - 1] && checkX(plantArea[i - 1], plantArea[i], toggle);
+          bot.inventory.emptySlotCount() < 2 && console.log("noo inv item");
 
+          if (ifGo === true) {
+            await go(bot, block, 1, safeMovements);
+          }
+
+          if (plant.name === "air") {
+            notPlanted++;
+            await go(bot, block, 4, safeMovements);
+            await sowPlant("potato", block);
+            plantedNow++;
+          } else {
+            if (plant.metadata === 7) {
+              console.log("groooown");
+              grownPlants++;
+              await go(bot, block, 4, safeMovements);
+              // await bot.dig(bot.blockAt(block, new Vec3(0, 1, 0)));
+              await sowPlant("potato", block);
+              plantedNow++;
+              harvestedNow++;
+            } else {
+              growing++;
+            }
+          }
+          toggle = toggle + 1;
+          i = i + 1;
+          await wait(Math.random() * (0.5 - 0.1) + 0.1);
+        }
+        resolve();
+      });
+    };
+    await farm();
     resolve();
   });
 };
