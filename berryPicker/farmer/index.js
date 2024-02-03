@@ -33,15 +33,7 @@ const farmer = async (bot, dcSend) => {
           vec3.x >= farmlandCoordsStart.x &&
           vec3.x <= farmlandCoordsEnd.x
       );
-      filteredArray.sort((a, b) => {
-        if (a.y !== b.y) {
-          return a.y - b.y;
-        }
-        if (a.x === b.x) {
-          return a.z - b.z;
-        }
-        return a.x - b.x;
-      });
+
       return filteredArray;
     }
 
@@ -94,7 +86,16 @@ const farmer = async (bot, dcSend) => {
       farmlandCoordsStart,
       farmlandCoordsEnd
     );
-    const plantArea = [...farmland, ...dirt];
+    const blocksUnsort = [...farmland, ...dirt];
+    const plantArea = blocksUnsort.sort((a, b) => {
+      if (a.y !== b.y) {
+        return a.y - b.y;
+      }
+      if (a.x === b.x) {
+        return a.z - b.z;
+      }
+      return a.x - b.x;
+    });
     let plants = plantArea.length;
     let grownPlants = 0;
     let notPlanted = 0;
