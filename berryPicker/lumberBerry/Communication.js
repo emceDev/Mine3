@@ -75,6 +75,7 @@ const initializeCommunication = () => {
         await wait(4000);
         bot.chat("/is home 8");
         await wait(6000);
+        enableAlert(bot, ["Jagodziarek"], dcSend);
         await farmer(bot, dcSend);
       }
       if (content.startsWith("Lumb")) {
