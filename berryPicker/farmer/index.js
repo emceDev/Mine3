@@ -129,7 +129,10 @@ const farmer = async (bot, dcSend) => {
         let toggle = 0;
         let i = 0;
         bot.on("path_update", (stat) => {
-          console.log("path update: ", stat.status);
+          console.log("=========path update: ");
+          console.log(stat.status);
+          console.log(stat);
+          console.log("=========path update end: ");
         });
 
         bot.on("goal_updated", () => {
