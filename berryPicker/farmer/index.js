@@ -128,20 +128,25 @@ const farmer = async (bot, dcSend) => {
       return new Promise(async (resolve, reject) => {
         let toggle = 0;
         let i = 0;
-        bot.on("path_update", (stat) => {
-          console.log("=========path update: ");
-          console.log(stat.status);
-          console.log(stat);
-          console.log("=========path update end: ");
+        bot.on("path_update", (r) => {
+          const nodesPerTick = ((r.visitedNodes * 50) / r.time).toFixed(2);
+          console.log(
+            `I can get there in ${
+              r.path.length
+            } moves. Computation took ${r.time.toFixed(2)} ms (${
+              r.visitedNodes
+            } nodes, ${nodesPerTick} nodes/tick)`
+          );
         });
 
         bot.on("goal_updated", () => {
           console.log("goal updated");
           // console.log(path);
         });
-        bot.on("path_reset", (res) => {
-          console.log("path reset: ", res);
+        bot.on("path_reset", (reason) => {
+          console.log(`Path was reset for reason: ${reason}`);
         });
+
         for (const block of plantArea) {
           const plant = bot.blockAt(new Vec3(block.x, block.y + 1, block.z));
 
@@ -153,7 +158,7 @@ const farmer = async (bot, dcSend) => {
             const goal = new GoalNear(block.x, block.y, block.z, 1);
             // await bot.pathfinder.getPathTo(safeMovements, goal, 5000);
             await wait(2000);
-            await bot.pathfinder.goto(goal);
+            bot.pathfinder.goto(goal);
           }
           // if (plant.name === "air") {
           //   notPlanted++;
