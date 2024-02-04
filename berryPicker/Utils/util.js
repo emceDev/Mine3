@@ -45,7 +45,13 @@ const go = async (bot, c, distance = 2, cfg) => {
   await bot.pathfinder.getPathTo(defaultMove, goal, 5000);
   await wait(100);
   return new Promise(async (resolve, reject) => {
+    // console.log("path");
+    // const path =
+    //   bot.pathfinder.getPathFromTo * (defaultMove, bot.position, goal);
+    // console.log(path);
+    console.log("go");
     bot.pathfinder.setGoal(goal);
+
     bot.once("goal_reached", () => {
       // console.log("onspot");
       resolve();
