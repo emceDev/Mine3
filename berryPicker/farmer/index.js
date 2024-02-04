@@ -137,7 +137,7 @@ const farmer = async (bot, dcSend) => {
           if (ifGo === true) {
             console.log("GOING true", i, block.z);
             await go(bot, block, 1, safeMovements).then((x) =>
-              console.log("pos==block ", bot.entity.position === block)
+              console.log("pos==block ", bot.entity.position, "    ", block)
             );
           }
           if (plant.name === "air") {
