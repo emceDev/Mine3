@@ -135,7 +135,7 @@ const farmer = async (bot, dcSend) => {
           const ifGo =
             plantArea[i - 1] && checkX(plantArea[i - 1], plantArea[i], toggle);
           if (ifGo === true) {
-            console.log("GOING true", i);
+            console.log("GOING true", i, block.z);
             await go(bot, block, 1, safeMovements);
           }
           if (plant.name === "air") {
