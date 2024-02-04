@@ -140,30 +140,30 @@ const farmer = async (bot, dcSend) => {
               console.log("pos==block ", bot.entity.position, "    ", block)
             );
           }
-          if (plant.name === "air") {
-            notPlanted++;
-            await sowPlant("potato", block);
-            plantedNow++;
-          } else {
-            if (plant.metadata === 7) {
-              console.log("groooown");
-              grownPlants++;
-              await bot.dig(
-                bot.blockAt(
-                  new Vec3(block.x, block.y + 1, block.z),
-                  new Vec3(0, 0.5, 0)
-                )
-              );
-              await sowPlant("potato", block);
-              plantedNow++;
-              harvestedNow++;
-            } else {
-              growing++;
-            }
-          }
-          toggle = toggle + 1;
-          i = i + 1;
-          await wait(Math.random() * (0.5 - 0.1) + 0.1);
+          // if (plant.name === "air") {
+          //   notPlanted++;
+          //   await sowPlant("potato", block);
+          //   plantedNow++;
+          // } else {
+          //   if (plant.metadata === 7) {
+          //     console.log("groooown");
+          //     grownPlants++;
+          //     await bot.dig(
+          //       bot.blockAt(
+          //         new Vec3(block.x, block.y + 1, block.z),
+          //         new Vec3(0, 0.5, 0)
+          //       )
+          //     );
+          //     await sowPlant("potato", block);
+          //     plantedNow++;
+          //     harvestedNow++;
+          //   } else {
+          //     growing++;
+          //   }
+          // }
+          // toggle = toggle + 1;
+          // i = i + 1;
+          // await wait(Math.random() * (0.5 - 0.1) + 0.1);
         }
       });
     };
