@@ -43,8 +43,7 @@ const go = async (bot, c, distance = 2, cfg) => {
     bot.pathfinder.setMovements(defaultMove);
   }
   const goal = new GoalNear(c.x, c.y, c.z, distance);
-  const path = await bot.pathfinder.getPathTo(defaultMove, goal, 5000);
-
+  await bot.pathfinder.getPathTo(defaultMove, goal, 5000);
   await wait(100);
   return new Promise(async (resolve, reject) => {
     // console.log("path");

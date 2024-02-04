@@ -131,8 +131,10 @@ const farmer = async (bot, dcSend) => {
         bot.on("path_update", (stat) => {
           console.log("path update: ", stat.status);
         });
+
         bot.on("goal_updated", () => {
           console.log("goal updated");
+          // console.log(path);
         });
         bot.on("path_reset", (res) => {
           console.log("path reset: ", res);
@@ -144,8 +146,11 @@ const farmer = async (bot, dcSend) => {
             plantArea[i - 1] && checkX(plantArea[i - 1], plantArea[i], toggle);
           if (ifGo === true) {
             // console.log("GOING true", i, block.z);
-            await go(bot, block, 1, safeMovements);
-            await wait(5000);
+            // await go(bot, block, 1, safeMovements);
+            const goal = new GoalNear(block.x, block.y, block.z, 1);
+            await bot.pathfinder.getPathTo(safeMovements, goal, 5000);
+            await wait(2000);
+            await bot.pathfinder.goto(goal);
           }
           // if (plant.name === "air") {
           //   notPlanted++;
