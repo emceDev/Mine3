@@ -30,7 +30,7 @@ const isFull = (bot) => {
   });
 };
 const go = async (bot, c, distance = 2, cfg) => {
-  // console.log("go", c);
+  console.log("go", c);
   const mcData = require("minecraft-data")(bot.version);
   const defaultMove = new Movements(bot, mcData);
   const goal = new GoalNear(c.x, c.y, c.z, distance);
@@ -53,7 +53,7 @@ const go = async (bot, c, distance = 2, cfg) => {
     bot.pathfinder.setGoal(goal);
 
     bot.once("goal_reached", () => {
-      // console.log("onspot");
+      console.log("onspot");
       resolve();
     });
   });
