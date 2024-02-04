@@ -148,7 +148,7 @@ const farmer = async (bot, dcSend) => {
             // console.log("GOING true", i, block.z);
             // await go(bot, block, 1, safeMovements);
             const goal = new GoalNear(block.x, block.y, block.z, 1);
-            await bot.pathfinder.getPathTo(safeMovements, goal, 5000);
+            // await bot.pathfinder.getPathTo(safeMovements, goal, 5000);
             await wait(2000);
             await bot.pathfinder.goto(goal);
           }
