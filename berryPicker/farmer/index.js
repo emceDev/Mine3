@@ -128,7 +128,15 @@ const farmer = async (bot, dcSend) => {
       return new Promise(async (resolve, reject) => {
         let toggle = 0;
         let i = 0;
-
+        bot.on("path_update", () => {
+          console.log("path update");
+        });
+        bot.on("goal_updated", () => {
+          console.log("goal update");
+        });
+        bot.on("path_reset", () => {
+          console.log("path reset");
+        });
         for (const block of plantArea) {
           const plant = bot.blockAt(new Vec3(block.x, block.y + 1, block.z));
 
