@@ -161,9 +161,9 @@ const farmer = async (bot, dcSend) => {
           //     growing++;
           //   }
           // }
-          // toggle = toggle + 1;
-          // i = i + 1;
-          // await wait(Math.random() * (0.5 - 0.1) + 0.1);
+          toggle = toggle + 1;
+          i = i + 1;
+          await wait(Math.random() * (0.5 - 0.1) + 0.1);
         }
       });
     };
