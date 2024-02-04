@@ -52,7 +52,7 @@ const go = async (bot, c, distance = 2, cfg) => {
     // console.log(path);
     console.log("go");
     // bot.pathfinder.setGoal(goal);
-    bot.pathfinder
+    await bot.pathfinder
       .goto(goal)
       .then((x) => console.log("in"))
       .resolve()
