@@ -51,11 +51,16 @@ const go = async (bot, c, distance = 2, cfg) => {
     //   bot.pathfinder.getPathFromTo * (defaultMove, bot.position, goal);
     // console.log(path);
     console.log("go");
-    bot.pathfinder.setGoal(goal);
+    // bot.pathfinder.setGoal(goal);
+    bot.pathfinder
+      .goto(goal)
+      .then((x) => console.log("in"))
+      .resolve()
+      .catch((err) => console.log("in error"));
 
     bot.once("goal_reached", () => {
       console.log("onspot");
-      resolve();
+      // resolve();
     });
   });
 };
