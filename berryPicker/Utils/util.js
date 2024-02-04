@@ -33,7 +33,7 @@ const go = async (bot, c, distance = 2, cfg) => {
   console.log("go", c);
   const mcData = require("minecraft-data")(bot.version);
   const defaultMove = new Movements(bot, mcData);
-  const goal = new GoalNear(c.x, c.y, c.z, distance);
+
   if (cfg) {
     Object.keys(cfg).forEach((key) => {
       const value = cfg[key];
@@ -42,6 +42,7 @@ const go = async (bot, c, distance = 2, cfg) => {
     });
     bot.pathfinder.setMovements(defaultMove);
   }
+  const goal = new GoalNear(c.x, c.y, c.z, distance);
   await bot.pathfinder.getPathTo(defaultMove, goal, 5000);
   await wait(100);
   return new Promise(async (resolve, reject) => {
