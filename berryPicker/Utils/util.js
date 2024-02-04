@@ -55,7 +55,7 @@ const go = async (bot, c, distance = 2, cfg) => {
     await bot.pathfinder
       .goto(goal)
       .then((x) => console.log("in"))
-      .resolve()
+      .then((x) => resolve())
       .catch((err) => console.log("in error"));
 
     bot.once("goal_reached", () => {
