@@ -34,10 +34,10 @@ const coralFarmer = async (bot, dcSend) => {
       (await checkIfHaveInEq(bot, "bone_meal", 128))
         ? null
         : await resuplyAtNearby(bot, "bone_meal", 128);
-      console.log("tossing");
+      // console.log("tossing");
       const items = bot.inventory.items();
       for (const item of items) {
-        console.log("tossing: ", item.name);
+        // console.log("tossing: ", item.name);
         item.name.includes("coral") && (await onlyToss(bot, item.name));
       }
       console.log("resuply ended");
@@ -52,9 +52,9 @@ const coralFarmer = async (bot, dcSend) => {
     await resuply();
     const pick = async (block, repick) => {
       return new Promise(async (resolve, reject) => {
-        console.log(`Block at (${block.position}: ${block.name}`);
+        // console.log(`Block at (${block.position}: ${block.name}`);
         if (block.name.includes("coral")) {
-          console.log("equiping for coral");
+          // console.log("equiping for coral");
           await equipItemFromEq(bot, "iron_shovel", dcSend).catch(
             async (err) => await resuply()
           );
@@ -63,7 +63,7 @@ const coralFarmer = async (bot, dcSend) => {
 
           resolve();
         } else if (block.name.includes("grass")) {
-          console.log("equiping for grass");
+          // console.log("equiping for grass");
           await equipItemFromEq(bot, "bone_meal", dcSend).catch(
             async (err) => await resuply()
           );
@@ -79,6 +79,7 @@ const coralFarmer = async (bot, dcSend) => {
       for (let x = currentPos.x - radius; x <= currentPos.x + radius; x++) {
         for (let z = currentPos.z - radius; z <= currentPos.z + radius; z++) {
           const block = bot.blockAt(new Vec3(x, currentPos.y, z));
+          await wait(100);
           await pick(block);
         }
       }
@@ -91,11 +92,10 @@ const coralFarmer = async (bot, dcSend) => {
         async (err) => await resuply()
       );
 
-      bot.activateBlock(
+      await bot.activateBlock(
         bot.blockAt(new Vec3(currentPos.x, currentPos.y - 1, currentPos.z))
       );
       boneMealUsed++;
-      await wait(100);
     }
     console.log("fisinhed loop:   ", coralPicked, "   ", boneMealUsed);
   });
