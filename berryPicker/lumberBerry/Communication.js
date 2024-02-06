@@ -86,9 +86,10 @@ const initializeCommunication = () => {
         await wait(4000);
         bot.chat("/zmienserwer skyblock");
         await wait(4000);
-        enableAlert(bot, ["Jagodziarek"], dcSend);
+
         bot.chat("/is home c");
         await wait(4000);
+        enableAlert(bot, ["Jagodziarek"], dcSend);
         await coralFarmer(bot, dcSend);
       }
       if (content.startsWith("Lumb")) {
