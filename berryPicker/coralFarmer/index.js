@@ -79,8 +79,8 @@ const coralFarmer = async (bot, dcSend) => {
       (await bot.inventory.emptySlotCount()) < 5 && (await resuply());
       for (let x = currentPos.x - radius; x <= currentPos.x + radius; x++) {
         for (let z = currentPos.z - radius; z <= currentPos.z + radius; z++) {
-          const block = bot.blockAt(new Vec3(x, currentPos.y, z));
-          await wait(100);
+          const block = await bot.blockAt(new Vec3(x, currentPos.y, z));
+          await wait(5);
           await pick(block);
         }
       }
