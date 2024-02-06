@@ -44,6 +44,7 @@ const coralFarmer = async (bot, dcSend) => {
     let coralPicked = 0;
     let boneMealUsed = 0;
     let unseen = [];
+    await resuply()
     const pick = async (block, repick) => {
       return new Promise(async (resolve, reject) => {
         console.log(`Block at (${block.position}: ${block.name}`);
