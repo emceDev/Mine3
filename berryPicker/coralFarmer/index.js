@@ -74,6 +74,7 @@ const coralFarmer = async (bot, dcSend) => {
         }
       });
     };
+    const startDate = new Date();
     for (let i = 0; i < 1000; i++) {
       (await bot.inventory.emptySlotCount()) < 5 && (await resuply());
       for (let x = currentPos.x - radius; x <= currentPos.x + radius; x++) {
@@ -96,8 +97,17 @@ const coralFarmer = async (bot, dcSend) => {
         bot.blockAt(new Vec3(currentPos.x, currentPos.y - 1, currentPos.z))
       );
       boneMealUsed++;
+      let diff = Math.abs(startDate - new Date());
+      let diffMin = Math.floor(diff / 1000 / 60);
+      console.log(
+        "fisinhed loop:   ",
+        coralPicked,
+        "   ",
+        boneMealUsed,
+        "in: ",
+        diffMin
+      );
     }
-    console.log("fisinhed loop:   ", coralPicked, "   ", boneMealUsed);
   });
 };
 
