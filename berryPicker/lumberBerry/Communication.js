@@ -85,9 +85,10 @@ const initializeCommunication = () => {
         bot.chat(`/login ${pass}`);
         await wait(4000);
         bot.chat("/zmienserwer skyblock");
+        console.log("server change");
         await wait(4000);
-
         bot.chat("/is home c");
+        console.log("going home c");
         await wait(4000);
         enableAlert(bot, ["Jagodziarek"], dcSend);
         await coralFarmer(bot, dcSend);
