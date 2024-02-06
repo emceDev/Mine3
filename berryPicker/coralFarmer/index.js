@@ -25,10 +25,15 @@ const coralFarmer = async (bot, dcSend) => {
     const resuply = async () => {
       bot.chat("/is home s");
       await wait(5000);
+      (await checkIfHaveInEq(bot, "iron_shovel", 1))
+        ? null
+        : await resuplyAtNearby(bot, "iron_shovel", 1);
       console.log("resuplying shovel");
-      await resuplyAtNearby(bot, "iron_shovel", 1);
+
       console.log("resuplying bone meal");
-      await resuplyAtNearby(bot, "bone_meal", 128);
+      (await checkIfHaveInEq(bot, "bone_meal", 128))
+        ? null
+        : await resuplyAtNearby(bot, "bone_meal", 128);
       console.log("tossing");
       const items = bot.inventory.items();
       for (const item of items) {
@@ -44,7 +49,7 @@ const coralFarmer = async (bot, dcSend) => {
     let coralPicked = 0;
     let boneMealUsed = 0;
     let unseen = [];
-    await resuply()
+    await resuply();
     const pick = async (block, repick) => {
       return new Promise(async (resolve, reject) => {
         console.log(`Block at (${block.position}: ${block.name}`);
