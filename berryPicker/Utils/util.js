@@ -30,10 +30,10 @@ const isFull = (bot) => {
   });
 };
 const go = async (bot, c, distance = 2, cfg) => {
-  console.log("go", c);
+  // console.log("go", c);
   const mcData = require("minecraft-data")(bot.version);
   const defaultMove = new Movements(bot, mcData);
-
+  const goal = new GoalNear(c.x, c.y, c.z, distance);
   if (cfg) {
     Object.keys(cfg).forEach((key) => {
       const value = cfg[key];
@@ -42,19 +42,12 @@ const go = async (bot, c, distance = 2, cfg) => {
     });
     bot.pathfinder.setMovements(defaultMove);
   }
-  const goal = new GoalNear(c.x, c.y, c.z, distance);
-  const path = await bot.pathfinder.getPathTo(defaultMove, goal, 5000);
-
+  await bot.pathfinder.getPathTo(defaultMove, goal, 5000);
   await wait(100);
   return new Promise(async (resolve, reject) => {
-    // console.log("path");
-    // const path =
-    //   bot.pathfinder.getPathFromTo * (defaultMove, bot.position, goal);
-    // console.log(path);
-    console.log("go");
     bot.pathfinder.setGoal(goal);
     bot.once("goal_reached", () => {
-      console.log("onspot", bot.entity.position, goal);
+      // console.log("onspot");
       resolve();
     });
   });
@@ -361,6 +354,58 @@ const equip = (bot, itemName, dcSend) => {
     }
   });
 };
+const equipItemFromEq = (bot, itemName, dcSend) => {
+  return new Promise(async (resolve, reject) => {
+    // const item = bot.inventory.findInventoryItem(itemName);
+    const held = bot.inventory.slots[bot.getEquipmentDestSlot("hand")];
+    // console.log(held);
+    const items = findItems(bot, itemName);
+    const item = items[0];
+    if (held) {
+      if (held.name === itemName) {
+        console.log("held is held");
+        return resolve();
+      }
+      console.log("held is not held", held.name, " wanted: ", itemName);
+    }
+    console.log("wanted: ", itemName);
+    if (item === undefined) {
+      console.log("no wanted items in inventory");
+      const waitForItem = setInterval(async () => {
+        const it = findItems(bot, itemName)[0];
+        // const it = bot.inventory.findInventoryItem(itemName);
+        if (it !== undefined) {
+          clearInterval(waitForItem);
+          await bot.equip(it, "hand");
+          console.log("item found, equipping");
+          resolve();
+        } else {
+          reject("no item" + itemName);
+        }
+      }, 10000);
+    } else {
+      console.log("equipping", item.name);
+      await bot.equip(item, "hand");
+      resolve();
+    }
+  });
+};
+const checkIfHaveInEq = async (bot, itemName, count) => {
+  const items = bot.inventory.items();
+  let invCount = 0;
+  const item = items.filter((item) => item.name === itemName);
+  if (item !== undefined) {
+    for (const id of item) {
+      invCount += id.count;
+    }
+  }
+  console.log("Check if have:", itemName, "have:", invCount, "wanted:", count);
+  if (item !== undefined && invCount >= count) {
+    return true;
+  } else {
+    return false;
+  }
+};
 const shouldSupply = async (bot, itemName, count, chestCoords, wanted) => {
   const items = bot.inventory.items();
   let invCount = 0;
@@ -377,9 +422,75 @@ const shouldSupply = async (bot, itemName, count, chestCoords, wanted) => {
     await withdrawItem(bot, itemName, wanted, chestCoords);
   }
 };
+const resuplyAtNearby = async (bot, itemName, count) => {
+  return new Promise(async (resolve, reject) => {
+    const chestC = await findBlocks(bot, "chest", 5);
+    const chest = bot.blockAt(chestC[0]);
+    const opened = await bot.openBlock(chest);
+    bot.once("windowOpen", () => {
+      console.log("opened");
+    });
+    await wait(1000);
+
+    const items = opened
+      .containerItems()
+      .filter((item) => item.name === itemName);
+    console.log(items);
+    if (items.length > 0) {
+      await opened.withdraw(items[0].type, null, count);
+      await opened.close();
+      resolve();
+    } else {
+      reject("no items at chest");
+    }
+  });
+};
 async function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+const onlyToss = async (bot, name) => {
+  const coords = bot.entity.position;
+  return new Promise((resolve, reject) => {
+    const tossItems = () => {
+      console.log("Tossing proccess started.", name);
+      return setTimeout(async () => {
+        const itemsToss = getItems();
+        bot.lookAt(new Vec3(coords.x, coords.y + 2, coords.z + 2), true);
+        if (getItems().length > 0) {
+          console.log("number items to toss", itemsToss.length);
+          await tossItemsArr(getItems())
+            .then((x) => resolve())
+            .catch((err) => console.log(err));
+        } else {
+          console.log("tossed items success");
+          resolve();
+        }
+      }, 6000);
+    };
+
+    function tossItemsArr(array) {
+      return new Promise(async (resolve, reject) => {
+        console.log("tossing out of inventory");
+        console.log(array);
+        for (const stack of array) {
+          bot.tossStack(stack);
+          await wait(1000);
+        }
+        console.log("tossed", array.length);
+        resolve();
+      });
+    }
+    function getItems() {
+      items = bot.inventory.items();
+      const stacks = items.filter(
+        (x) => x.name === name && x.count === 64 && x
+      );
+
+      return stacks;
+    }
+    tossItems();
+  });
+};
 
 module.exports = {
   equip,
@@ -395,4 +506,8 @@ module.exports = {
   withdrawItem,
   shouldSupply,
   getHostileEntities,
+  checkIfHaveInEq,
+  equipItemFromEq,
+  resuplyAtNearby,
+  onlyToss,
 };

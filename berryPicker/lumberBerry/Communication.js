@@ -17,6 +17,7 @@ const { grinderAfk } = require("../attack");
 const { farmer } = require("../farmer");
 const { honeyMan } = require("../honeyMan");
 const { blockFinder } = require("../blockFInder");
+const { coralFarmer } = require("../coralFarmer");
 
 // const intents = new Intents
 let channel = undefined;
@@ -77,6 +78,18 @@ const initializeCommunication = () => {
         await wait(6000);
         enableAlert(bot, ["Jagodziarek"], dcSend);
         await farmer(bot, dcSend);
+      }
+      if (content.startsWith("Cor")) {
+        const bot = await startBot(dcSend);
+        await wait(4000);
+        bot.chat(`/login ${pass}`);
+        await wait(4000);
+        bot.chat("/zmienserwer skyblock");
+        await wait(4000);
+        enableAlert(bot, ["Jagodziarek"], dcSend);
+        bot.chat("/is home c");
+        await wait(4000);
+        await coralFarmer(bot, dcSend);
       }
       if (content.startsWith("Lumb")) {
         LumberJackMin(bot, dcSend);
