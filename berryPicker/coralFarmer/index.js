@@ -68,7 +68,7 @@ const coralFarmer = async (bot, dcSend) => {
         }
       });
     };
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 1000; i++) {
       (await bot.inventory.emptySlotCount()) < 5 && (await resuply());
       for (let x = currentPos.x - radius; x <= currentPos.x + radius; x++) {
         for (let z = currentPos.z - radius; z <= currentPos.z + radius; z++) {
