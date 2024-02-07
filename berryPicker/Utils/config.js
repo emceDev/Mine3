@@ -2,10 +2,10 @@ const { token } = require("./credentials");
 
 const port = 25565;
 
-const username = "grzesiuKartofel";
-const pass = "jestGrane1";
-// const username = "Berserker321";
-// const pass = "minecraft123";
+// const username = "grzesiuKartofel";
+// const pass = "jestGrane1";
+const username = "Berserker321";
+const pass = "minecraft123";
 
 // const host = "127.0.0.1";
 const host = "mcosada.pl";
